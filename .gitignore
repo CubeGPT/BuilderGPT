@@ -1,0 +1,6 @@
+projects/*
+!projects/template/
+
+logs/*
+test.py
+__pycache__
