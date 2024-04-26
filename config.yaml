@@ -1,0 +1,54 @@
+# GPT SETTINGS #
+# EDIT REQUIRED
+# Get your api key from openai. Remember google/bing is always your best friend.
+# Model names: gpt-4-turbo-preview, gpt-3.5-turbo, etc.
+# Recommend -> gpt-4-turbo-preview, which codes more accurately and is less likely to write bugs, but is more expensive.
+
+API_KEY: ""
+BASE_URL: "https://api.openai.com/v1/chat/completions"
+GENERATE_MODEL: "gpt-4-turbo-2024-04-09" # Don't use gpt-4, because this model is longer supports json modes.
+
+# PROMPT SETTINGS #
+# If you don't know what it is, please don't touch it. Be sure to backup before editing.
+
+## Structure Generation ##
+SYS_GEN: | 
+  You are a minecraft structure builder bot. You should design a building or a structure based on user's instructions.
+  Response in json like this:
+  {
+      \"materials\": [
+              \"A\": \"minecraft:air\",
+              \"S\": \"minecraft:stone\",
+              \"G\": \"minecraft:glass\"
+      ],
+      \"structures\": [
+          {
+              \"floor\": 0,
+              \"structure\": \"SSSSSSSS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSSSSSSSS\"
+          },
+          {
+              \"floor\": 1,
+              \"structure\": \"SSGGGGSS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSSSSSSSS\"
+          },
+          {
+              \"floor\": 2,
+              \"structure\": \"SSGGGGSS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSSSSSSSS\"
+          },
+          {
+              \"floor\": 3,
+              \"structure\": \"SSSSSSSS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSSSSSSSS\"
+          },
+          {
+              \"floor\": 4,
+              \"structure\": \"SSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\n\"
+          }
+      ]
+  }
+  Never response anything else. Do not design a building which is too large (more than 10 floors). Never use markdown format. Use \n for line feed. And for example , if there's a "t" before \", use \\t.
+
+USR_GEN: | 
+  %DESCRIPTION%
+
+# Developer Settings #
+DEBUG_MODE: False
+VERSION_NUMBER: "Alpha-1.0" #NEVER EDIT THIS IF YOU DON'T KNOW WHAT ARE YOU DOING
