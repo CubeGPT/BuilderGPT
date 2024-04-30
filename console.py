@@ -58,6 +58,13 @@ if __name__ == "__main__":
 
     logger(f"console: Saving {name}.schem to generated/ folder.")
     version_tag = core.input_version_to_mcs_tag(version)
+
+    # Check if the version is valid. If not, ask the user to retype the version number.
+    while version_tag is None:
+        print("Error: Invalid version number. Please retype the version number.")
+        version = input("[re-0/0] What's your minecraft version? (eg. 1.20.1): ")
+        version_tag = core.input_version_to_mcs_tag(version)
+
     schem.save("generated", name, version_tag)
 
     print("Generated. Get your schem file in folder generated.")
