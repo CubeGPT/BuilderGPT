@@ -6,7 +6,19 @@ from log_writer import logger
 import core
 import config
 
-def generate_plugin(description):
+def get_schematic(description):
+    """
+    Generates a schematic based on the given description.
+
+    Args:
+        description (str): The description of the schematic.
+
+    Returns:
+        str: The generated schematic.
+
+    Raises:
+        SystemExit: If the schematic generation fails.
+    """
     response = core.askgpt(config.SYS_GEN, config.USR_GEN.replace("%DESCRIPTION%", description), config.GENERATE_MODEL)
 
     schem = core.text_to_schem(response)
@@ -18,17 +30,27 @@ def generate_plugin(description):
     return schem
 
 def generate_schematic():
+    """
+    Generates a schematic file based on user input.
+
+    This function retrieves the version, name, and description from the user interface,
+    initializes the core functionality, and generates a plugin based on the provided description.
+    It then saves the generated schematic file in the 'generated' folder.
+
+    Returns:
+        None
+    """
+    generate_button.config(state=tk.DISABLED, text="Generating...")
+
     version = version_entry.get()
     name = name_entry.get()
     description = description_entry.get()
-
-    core.initialize()
 
     logger(f"console: input version {version}")
     logger(f"console: input name {name}")
     logger(f"console: input description {description}")
 
-    schem = generate_plugin(description)
+    schem = get_schematic(description)
 
     logger(f"console: Saving {name}.schem to generated/ folder.")
     version_tag = core.input_version_to_mcs_tag(version)
@@ -42,8 +64,10 @@ def generate_schematic():
 
     msgbox.showinfo("Success", "Generated. Get your schem file in folder generated.")
 
+    generate_button.config(state=tk.NORMAL, text="Generate")
+
 def Application():
-    global version_entry, name_entry, description_entry
+    global version_entry, name_entry, description_entry, generate_button
 
     window = tk.Tk()
     window.title("BuilderGPT")
@@ -74,6 +98,7 @@ def Application():
     window.mainloop()
 
 if __name__ == "__main__":
+    core.initialize()
     Application()
 else:
     print("Error: Please run ui.py as the main program instead of importing it from another program.")
