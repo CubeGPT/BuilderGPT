@@ -97,7 +97,11 @@ def text_to_schem(text: str):
         return schematic
     
     except (json.decoder.JSONDecodeError, KeyError, TypeError, ValueError, AttributeError, IndexError) as e:
-        logger(f"text_to_command: failed to load JSON data. Error: {e}")
+        logger(f"text_to_command: failed to load JSON data. Error message: {e}")
+
+        if config.DEBUG_MODE:
+            raise e
+        
         return None
 
 def input_version_to_mcs_tag(input_version):
