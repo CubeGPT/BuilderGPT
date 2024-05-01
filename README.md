@@ -7,6 +7,8 @@
 "></a>
 <!-- <a href="https://crowdin.com/project/bukkitgpt"><img src="https://img.shields.io/badge/i18n-Crowdin-darkblue"></a> -->
 <!-- <p>English | <a href="https://github.com/CubeGPT/BukkitGPT/blob/master/README-zh_cn.md">简体中文</a></p> -->
+<br>
+<a href="https://discord.gg/kTZtXw8s7r">Join our discord</a>
 <br/>
 </div>
 
@@ -40,9 +42,8 @@ After the user enters a requirement, the program causes `gpt-4-preview` to gener
 ```json
 {
     "materials": [
-            "A": "minecraft:air",
-            "S": "minecraft:stone",
-            "G": "minecraft:glass"
+        "A: \"minecraft:air\"",
+        "S: \"minecraft:stone\""
     ],
     "structures": [
         {
