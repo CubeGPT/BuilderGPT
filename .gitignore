@@ -1,5 +1,4 @@
-projects/*
-!projects/template/
+generated/*
 
 logs/*
 test.py

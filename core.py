@@ -97,7 +97,11 @@ def text_to_schem(text: str):
         return schematic
     
     except (json.decoder.JSONDecodeError, KeyError, TypeError, ValueError, AttributeError, IndexError) as e:
-        logger(f"text_to_command: failed to load JSON data. Error: {e}")
+        logger(f"text_to_command: failed to load JSON data. Error message: {e}")
+
+        if config.DEBUG_MODE:
+            raise e
+        
         return None
 
 def input_version_to_mcs_tag(input_version):
@@ -114,8 +118,13 @@ def input_version_to_mcs_tag(input_version):
         >>> input_version_to_mcs_tag("1.20.1")
         'JE_1_20_1'
     """
-    version = input_version.split(".")
-    return getattr(mcschematic.Version, f"JE_{version[0]}_{version[1]}_{version[2]}")
+    try:
+        version = input_version.split(".")
+        result = getattr(mcschematic.Version, f"JE_{version[0]}_{version[1]}_{version[2]}")
+    except (AttributeError, IndexError) as e:
+        logger(f"input_version_to_mcs_tag: failed to convert version {input_version}; {e}")
+        return None
+    return result
 
 if __name__ == "__main__":
     print("This script is not meant to be run directly. Please run console.py instead.")
