@@ -20,14 +20,24 @@
 
 BuilderGPT is an open source, free, AI-powered Minecraft structure generator. It was developed for minecraft map makers. It can generate structures in `*.schem` format and users can import them via worldedit, etc.
 
+## GET YOUR FREE API KEY WITH GPT-4 ACCESS
+We are pleased to announce that SEC-API is offering a free apikey for users of programs developed by CubeGPT!
+This key has access to gpt-4-1106-preview and gpt-3.5-turbo-1106.
+
+**Note that this key does not have access to models such as gpt-4-vision and gpt-4-turbo-preview and expires at any time.**
+
+Get the key from [here](https://github.com/orgs/CubeGPT/discussions/1). You can use it in BuilderGPT.
+
 ## Partner
 [![](https://www.bisecthosting.com/partners/custom-banners/c37f58c7-c49b-414d-b53c-1a6e1b1cff71.webp)](https://bisecthosting.com/cubegpt)
 
 ## Features
 
-- [x] Generate structures
+- [x] Generate structures directly
 - [x] Export generated structures to `*.schem` files
 - [ ] Export generated structures to OOC commands
+- [ ] **Advanced Mode** (Use Stable Diffusion/DALL-E to generate the design image and let `gpt-4-vision` generate the struture base on it.)
+- [ ] Preview generated structure
 - [ ] Edit structures
 
 ### Other projects of CubeGPT Team
@@ -38,6 +48,43 @@ BuilderGPT is an open source, free, AI-powered Minecraft structure generator. It
 
 ## How it works
 
+### Advanced Mode
+After the user enters a requirement, the program uses `gpt-4-preview` to expand the details of the requirement and generate a specific solution. The program then uses the generated solution to generate a drawing tag using `gpt-4-preview`, and then calls Stable Diffusion WebUI or DALL-E to generate a design using the generated tag. The generated schematic is then given to `gpt-4-vision-preview` along with the optimized requirements to generate a `json` containing the content of the structure, for example:
+
+```json
+{
+    "materials": [
+        "A: \"minecraft:air\"",
+        "S: \"minecraft:stone\""
+    ],
+    "structures": [
+        {
+            "floor": 0,
+            "structure": "SSSSSSSS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSSSSSSSS"
+        },
+        {
+            "floor": 1,
+            "structure": "SSGGGGSS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSSSSSSSS"
+        },
+        {
+            "floor": 2,
+            "structure": "SSGGGGSS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSSSSSSSS"
+        },
+        {
+            "floor": 3,
+            "structure": "SSSSSSSS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSSSSSSSS"
+        },
+        {
+            "floor": 4,
+            "structure": "SSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\n"
+        }
+    ]
+}
+```
+The program then parses this `json` response and generates a `*.schem` file for the user to import the structure into the game.
+
+
+### Simple Mode
 After the user enters a requirement, the program causes `gpt-4-preview` to generate a `json` containing the content of the structure, for example:
 ```json
 {
