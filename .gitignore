@@ -1,5 +1,6 @@
+__pycache__
 generated/*
 
 logs/*
 test.py
-__pycache__
+_config.yaml

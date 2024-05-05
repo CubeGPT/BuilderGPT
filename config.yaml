@@ -1,12 +1,34 @@
+########## EDIT REQUIRED ##########
+
 # GPT SETTINGS #
-# EDIT REQUIRED
 # Get your api key from openai. Remember google/bing is always your best friend.
 # Model names: gpt-4-turbo-preview, gpt-3.5-turbo, etc.
 # Recommend -> gpt-4-turbo-preview, which codes more accurately and is less likely to write bugs, but is more expensive.
 
-API_KEY: ""
+API_KEY: "" # Free API Key with GPT-4 access: https://github.com/CubeGPT/.github/discussions/1
 BASE_URL: "https://api.openai.com/v1/chat/completions"
-GENERATE_MODEL: "gpt-4-turbo-2024-04-09" # Don't use gpt-4, because this model is longer supports json modes.
+
+GENERATE_MODEL: "gpt-4-turbo-preview" # Don't use gpt-4, because this model is longer supports json modes.
+
+
+# ADVANCED MODE #
+# This mode is experimental. But we highly recommend you to enable this mode for better performance.
+ADVANCED_MODE: True
+IMAGE_GENERATION_MODEL: "dall-e-3"
+IMAGE_SIZE: "1024x1024"
+VISION_MODEL: "gpt-4-vision-preview"
+
+# Note: If you are using the free API key above, you can't use the advanced mode since it doesn't support dall-e-3 and gpt-4-vision-preview models.
+USE_DIFFERENT_APIKEY_FOR_DALLE_MODEL: False
+DALLE_API_KEY: ""
+DALLE_BASE_URL: "https://api.openai.com/v1/chat/completions"
+
+USE_DIFFERENT_APIKEY_FOR_VISION_MODEL: False
+VISION_API_KEY: ""
+VISION_BASE_URL: "https://api.openai.com/v1/chat/completions"
+
+
+########## EDIT OPTIONAL ##########
 
 # PROMPT SETTINGS #
 # If you don't know what it is, please don't touch it. Be sure to backup before editing.
@@ -47,6 +69,65 @@ SYS_GEN: |
 
 USR_GEN: | 
   %DESCRIPTION%
+
+## Advanced Mode ##
+
+### Programme ###
+BTR_DESC_SYS_GEN: |
+  You are an minecraft schematic designer. Your role is to design a programme based on the requirements sent to you by the user.
+  For exmaple,
+  User input: "A cafe."
+  Response: "A small cafe with a modern design, red roof and brown door, big windows. Inside, there's two tables and a bar."
+
+BTR_DESC_USR_GEN: |
+  %DESCRIPTION%
+
+### Image Tag Generation ###
+IMG_TAG_SYS_GEN: |
+  You work for a minecraft schematic company and you need to use AI to generate the design image based on designer's architectural programme. Please response the tags you'd like to use for the image generation.
+  Never response anything else.
+  Example resposne: "A minecraft building with a modern design, red roof and brown door, big windows."
+
+IMG_TAG_USR_GEN: |
+  Designer's programme: %PROGRAMME%
+
+### Stucture Generation (Advanced with gpt-4-vision) ###
+SYS_GEN_ADV: |
+  You are a minecraft structure builder bot. You should design a building or a structure based on designer's architectural programme AND the design image.
+  Response in json like this:
+  {
+      "materials": [
+            "A: \"minecraft:air\"",
+            "S: \"minecraft:stone\""
+      ],
+      "structures": [
+          {
+              "floor": 0,
+              "structure": "SSSSSSSS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSSSSSSSS"
+          },
+          {
+              "floor": 1,
+              "structure": "SSGGGGSS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSSSSSSSS"
+          },
+          {
+              "floor": 2,
+              "structure": "SSGGGGSS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSSSSSSSS"
+          },
+          {
+              "floor": 3,
+              "structure": "SSSSSSSS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSSSSSSSS"
+          },
+          {
+              "floor": 4,
+              "structure": "SSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\n"
+          }
+      ]
+  }
+  Never response anything else. Do not design a building which is too large (more than 10 floors). Never use markdown format. Use \n for line feed.
+
+USR_GEN_ADV: |
+  %DESCRIPTION%
+  The image is attached below.
 
 # Developer Settings #
 DEBUG_MODE: True
