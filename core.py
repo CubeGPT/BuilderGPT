@@ -23,13 +23,15 @@ def initialize():
     """
     logger(f"Launch. Software version {config.VERSION_NUMBER}, platform {sys.platform}")
 
-def askgpt(system_prompt: str, user_prompt: str, model_name: str):
+def askgpt(system_prompt: str, user_prompt: str, model_name: str, disable_json_mode: bool = False, image_url: str = None):
     """
     Interacts with ChatGPT using the specified prompts.
 
     Args:
         system_prompt (str): The system prompt.
         user_prompt (str): The user prompt.
+        model_name (str): The model name to use.
+        disable_json_mode (bool): Whether to disable JSON mode.
 
     Returns:
         str: The response from ChatGPT.
