@@ -37,6 +37,24 @@ def generate_plugin(description):
     
     return schem
 
+def get_schematic_advanced(description):
+    print("(Advanced Mode) Generating programme...")
+    programme = core.askgpt(config.BTR_DESC_SYS_GEN, config.BTR_DESC_USR_GEN.replace("%DESCRIPTION%", description), config.GENERATE_MODEL, disable_json_mode=True)
+
+    print("(Advanced Mode) Generating image tag...")
+    image_tag = core.askgpt(config.IMG_TAG_SYS_GEN, config.IMG_TAG_USR_GEN.replace("%PROGRAMME%", programme), config.GENERATE_MODEL, disable_json_mode=True)
+
+    print("(Advanced Mode) Generating image...")
+    tag = image_tag + ", minecraft)"
+    image_url = core.ask_dall_e(tag)
+
+    print("(Advanced Mode) Generating schematic...")
+    response = core.askgpt(config.SYS_GEN_ADV, config.USR_GEN_ADV.replace("%DESCRIPTION%", description), config.VISION_MODEL, image_url=image_url)
+
+    schem = core.text_to_schem(response)
+
+    return schem
+
 if __name__ == "__main__":
     core.initialize()
 
@@ -54,7 +72,11 @@ if __name__ == "__main__":
 
     print("Generating...")
 
-    schem = generate_plugin(description)
+    if config.ADVANCED_MODE:
+        print("Advanced mode is enabled. Generating a schematic with advanced features.")
+        schem = get_schematic_advanced(description)
+    else:
+        schem = generate_plugin(description)
 
     logger(f"console: Saving {name}.schem to generated/ folder.")
     version_tag = core.input_version_to_mcs_tag(version)

@@ -2,6 +2,9 @@ from openai import OpenAI
 import mcschematic
 import sys
 import json
+import requests
+import base64
+import uuid
 
 from log_writer import logger
 import config
@@ -31,24 +34,46 @@ def askgpt(system_prompt: str, user_prompt: str, model_name: str):
     Returns:
         str: The response from ChatGPT.
     """
-    client = OpenAI(api_key=config.API_KEY, base_url=config.BASE_URL)
+    if image_url is not None and config.USE_DIFFERENT_APIKEY_FOR_VISION_MODEL:
+        logger("Using different API key for vision model.")
+        client = OpenAI(api_key=config.VISION_API_KEY, base_url=config.VISION_BASE_URL)
+    else:
+        client = OpenAI(api_key=config.API_KEY, base_url=config.BASE_URL)
+
     logger("Initialized the OpenAI client.")
 
     # Define the messages for the conversation
-    messages = [
-        {"role": "system", "content": system_prompt},
-        {"role": "user", "content": user_prompt}
-    ]
+    if image_url is not None:
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": [
+                {"type": "text", "text": user_prompt},
+                {"type": "image_url", "image_url": {"url": image_url}}
+                ]
+            }
+        ]
+    else:
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt}
+        ]
+
 
     logger(f"askgpt: system {system_prompt}")
     logger(f"askgpt: user {user_prompt}")
 
     # Create a chat completion
-    response = client.chat.completions.create(
-        model=model_name,
-        response_format={"type": "json_object"},
-        messages=messages
-    )
+    if disable_json_mode:
+        response = client.chat.completions.create(
+            model=model_name,
+            messages=messages
+        )
+    else:
+        response = client.chat.completions.create(
+            model=model_name,
+            response_format={"type": "json_object"},
+            messages=messages
+        )
 
     logger(f"askgpt: response {response}")
 
@@ -56,6 +81,37 @@ def askgpt(system_prompt: str, user_prompt: str, model_name: str):
     assistant_reply = response.choices[0].message.content
     logger(f"askgpt: extracted reply {assistant_reply}")
     return assistant_reply
+
+def ask_dall_e(description: str):
+    """
+    Generates a design image using the DALL-E API.
+
+    Args:
+        description (str): The prompt or description for generating the image.
+
+    Returns:
+        str: The URL of the generated image.
+    """
+    if config.USE_DIFFERENT_APIKEY_FOR_DALLE_MODEL:
+        client = OpenAI(api_key=config.DALLE_API_KEY, base_url=config.DALLE_BASE_URL)
+    else:
+        client = OpenAI(api_key=config.API_KEY, base_url=config.BASE_URL)
+
+    logger("ask_dall_e: Generating design image using DALL-E API.")
+
+    response = client.images.generate(
+        model=config.IMAGE_GENERATION_MODEL,
+        prompt=description,
+        size=config.IMAGE_SIZE,
+        quality="standard",
+        n=1,
+    )
+
+    image_url = response.data[0].url
+
+    logger(f"ask_dall_e: Generated image URL {image_url}")
+
+    return image_url
 
 def text_to_schem(text: str):
     """

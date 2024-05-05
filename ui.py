@@ -29,6 +29,24 @@ def get_schematic(description):
     
     return schem
 
+def get_schematic_advanced(description):
+    print("(Advanced Mode) Generating programme...")
+    programme = core.askgpt(config.BTR_DESC_SYS_GEN, config.BTR_DESC_USR_GEN.replace("%DESCRIPTION%", description), config.GENERATE_MODEL, disable_json_mode=True)
+
+    print("(Advanced Mode) Generating image tag...")
+    image_tag = core.askgpt(config.IMG_TAG_SYS_GEN, config.IMG_TAG_USR_GEN.replace("%PROGRAMME%", programme), config.GENERATE_MODEL, disable_json_mode=True)
+
+    print("(Advanced Mode) Generating image...")
+    tag = image_tag + ", minecraft)"
+    image_url = core.ask_dall_e(tag)
+
+    print("(Advanced Mode) Generating schematic...")
+    response = core.askgpt(config.SYS_GEN_ADV, config.USR_GEN_ADV.replace("%DESCRIPTION%", description), config.VISION_MODEL, image_url=image_url)
+
+    schem = core.text_to_schem(response)
+
+    return schem
+
 def generate_schematic():
     """
     Generates a schematic file based on user input.
@@ -42,6 +60,11 @@ def generate_schematic():
     """
     generate_button.config(state=tk.DISABLED, text="Generating...")
 
+    if config.ADVANCED_MODE:
+        msgbox.showwarning("Warning", "You are using advanced mode. This mode will generate schematic with higher quality, but it may take longer to generate.")
+
+    msgbox.showinfo("Info", "It is expected to take 30 seconds to 5 minutes. The programme may \"not responding\", this is normal, just be patient. DO NOT CLOSE THE PROGRAM. Click the button below to start generating.")
+
     version = version_entry.get()
     name = name_entry.get()
     description = description_entry.get()
@@ -50,7 +73,10 @@ def generate_schematic():
     logger(f"console: input name {name}")
     logger(f"console: input description {description}")
 
-    schem = get_schematic(description)
+    if config.ADVANCED_MODE:
+        schem = get_schematic_advanced(description)
+    else:
+        schem = get_schematic(description)
 
     logger(f"console: Saving {name}.schem to generated/ folder.")
     version_tag = core.input_version_to_mcs_tag(version)
