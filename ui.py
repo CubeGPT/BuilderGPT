@@ -1,6 +1,7 @@
 import sys
 import tkinter as tk
 import tkinter.messagebox as msgbox
+import tkinter.simpledialog as simpledialog
 
 from log_writer import logger
 import core
@@ -83,8 +84,8 @@ def generate_schematic():
 
     while version_tag is None:
         msgbox.showerror("Error", "Invalid version number. Please retype the version number.")
-        version = version_entry.get()
-        version_tag = core.input_version_to_mcs_tag(version)
+        version = simpledialog.askstring("Reinput", "Please retype the version number (eg. 1.20.1): ")
+        core.input_version_to_mcs_tag(version)
 
     schem.save("generated", name, version_tag)
 
@@ -128,3 +129,4 @@ if __name__ == "__main__":
     Application()
 else:
     print("Error: Please run ui.py as the main program instead of importing it from another program.")
+    logger("Exit: Running ui.py as an imported module.")
