@@ -26,6 +26,7 @@ BuilderGPT is an open source, free, AI-powered Minecraft structure generator. It
 ## Features
 
 - [x] Generate structures
+- [x] Rendering schematic in-program
 - [x] Export generated structures to `*.schem` files
 - [ ] Export generated structures to OOC commands
 - [ ] Edit structures
@@ -69,7 +70,7 @@ After the user enters a requirement, the program causes `gpt-4-preview` to gener
     ]
 }
 ```
-The program then parses this `json` response and generates a `*.schem` file for the user to import the structure into the game.
+The program then parses this `json` response. Then it uploads the image (headless) to cubical.xyz and downloads the rendered image from the site using `playwright`.
 
 ## Requirements
 You can use BukkitGPT on any device with [Python 3+](https://www.python.org/).  
