@@ -64,6 +64,8 @@ def generate_schematic():
     Returns:
         None
     """
+    global name
+
     generate_button.config(state=tk.DISABLED, text="Generating...")
 
     if config.ADVANCED_MODE:
@@ -72,17 +74,19 @@ def generate_schematic():
     msgbox.showinfo("Info", "It is expected to take 30 seconds to 5 minutes. The programme may \"not responding\", this is normal, just be patient. DO NOT CLOSE THE PROGRAM. Click the button below to start generating.")
 
     version = version_entry.get()
-    name = name_entry.get()
     description = description_entry.get()
 
     logger(f"console: input version {version}")
-    logger(f"console: input name {name}")
     logger(f"console: input description {description}")
 
     if config.ADVANCED_MODE:
         schem = get_schematic_advanced(description)
     else:
         schem = get_schematic(description)
+    
+    raw_name = core.askgpt(config.SYS_GEN_NAME, config.USR_GEN_NAME.replace("%DESCRIPTION%", description), config.NAMING_MODEL, disable_json_mode=True)
+
+    name = raw_name + "-" + str(uuid.uuid4())
 
     logger(f"console: Saving {name}.schem to generated/ folder.")
     version_tag = core.input_version_to_mcs_tag(version)
@@ -136,11 +140,6 @@ def Application():
     version_label.pack()
     version_entry = tk.Entry(window)
     version_entry.pack()
-
-    name_label = tk.Label(window, text="What's the name of your structure? It will be the name of the generated *.schem file:")
-    name_label.pack()
-    name_entry = tk.Entry(window)
-    name_entry.pack()
 
     description_label = tk.Label(window, text="What kind of structure would you like to generate? Describe as clear as possible:")
     description_label.pack()

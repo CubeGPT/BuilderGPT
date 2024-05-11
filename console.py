@@ -1,4 +1,5 @@
 import sys
+import uuid
 
 from log_writer import logger
 import core
@@ -61,13 +62,12 @@ if __name__ == "__main__":
     print("Welcome to BuilderGPT, an open source, free, AI-powered Minecraft structure generator developed by BaimoQilin (@Zhou-Shilin). Don't forget to check out the config.yaml configuration file, you need to fill in the OpenAI API key.\n")
 
     # Get user inputs
-    version = input("[0/2] What's your minecraft version? (eg. 1.20.1): ")
-    name = input("[1/2] What's the name of your structure? It will be the name of the generated *.schem file: ")
-    description = input("[2/2] What kind of structure would you like to generate? Describe as clear as possible: ")
+    version = input("[0/3] What's your minecraft version? (eg. 1.20.1): ")
+    description = input("[1/3] What kind of structure would you like to generate? Describe as clear as possible: ")
+    render = input("[2/3] Do you want to render the structure? (y/n): ")
 
     # Log user inputs
     logger(f"console: input version {version}")
-    logger(f"console: input name {name}")
     logger(f"console: input description {description}")
 
     print("Generating...")
@@ -77,6 +77,11 @@ if __name__ == "__main__":
         schem = get_schematic_advanced(description)
     else:
         schem = generate_plugin(description)
+    
+    print("Schematic generated. Generating schematic name...")
+    raw_name = core.askgpt(config.SYS_GEN_NAME, config.USR_GEN_NAME.replace("%DESCRIPTION%", description), config.NAMING_MODEL, disable_json_mode=True)
+
+    name = raw_name + "-" + str(uuid.uuid4())
 
     logger(f"console: Saving {name}.schem to generated/ folder.")
     version_tag = core.input_version_to_mcs_tag(version)
@@ -89,7 +94,7 @@ if __name__ == "__main__":
 
     schem.save("generated", name, version_tag)
 
-    print("Generated. Get your schem file in folder generated.")
+    print(f"Generated with file name \"{name}.schem\". Get your schem file in folder generated.")
 
 else:
     print("Error: Please run console.py as the main program instead of importing it from another program.")
