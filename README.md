@@ -33,11 +33,12 @@ Get the key from [here](https://github.com/orgs/CubeGPT/discussions/1). You can 
 
 ## Features
 
+- [x] Generate structures
+- [x] Preview rendered schematic in-program
 - [x] Generate structures directly
 - [x] Export generated structures to `*.schem` files
 - [ ] Export generated structures to OOC commands
 - [ ] **Advanced Mode** (Use Stable Diffusion/DALL-E to generate the design image and let `gpt-4-vision` generate the struture base on it.)
-- [ ] Preview generated structure
 - [ ] Edit structures
 
 ### Other projects of CubeGPT Team
@@ -116,7 +117,7 @@ After the user enters a requirement, the program causes `gpt-4-preview` to gener
     ]
 }
 ```
-The program then parses this `json` response and generates a `*.schem` file for the user to import the structure into the game.
+The program then parses this `json` response. Then it uploads the image (headless) to cubical.xyz and downloads the rendered image from the site using `playwright`.
 
 ## Requirements
 You can use BukkitGPT on any device with [Python 3+](https://www.python.org/).  

@@ -30,6 +30,14 @@ VISION_BASE_URL: "https://api.openai.com/v1/chat/completions"
 
 ########## EDIT OPTIONAL ##########
 
+# EXPERIMENTAL FEATURES #
+NAMING_MODEL: "gpt-3.5-turbo"
+RENDERING_URL: "https://beta.cubical.xyz/" # Don't change this unless you know what you are doing.
+
+# DEVELOPER SETTINGS #
+DEBUG_MODE: True
+VERSION_NUMBER: "1.1.0" #NEVER EDIT THIS IF YOU DON'T KNOW WHAT ARE YOU DOING
+
 # PROMPT SETTINGS #
 # If you don't know what it is, please don't touch it. Be sure to backup before editing.
 
@@ -68,6 +76,18 @@ SYS_GEN: |
   Never response anything else. Do not design a building which is too large (more than 10 floors). Never use markdown format. Use \n for line feed.
 
 USR_GEN: | 
+  %DESCRIPTION%
+
+SYS_GEN_NAME: |
+  Give a name to the building based on user's desciption. Do not use spaces.
+  For example:
+  Input "A small house with a red roof."
+  Output "RedRoofHouse"
+
+  Input "A cafe with a modern design."
+  Output "ModernCafe"
+
+USR_GEN_NAME: |
   %DESCRIPTION%
 
 ## Advanced Mode ##
@@ -128,7 +148,3 @@ SYS_GEN_ADV: |
 USR_GEN_ADV: |
   %DESCRIPTION%
   The image is attached below.
-
-# Developer Settings #
-DEBUG_MODE: True
-VERSION_NUMBER: "Alpha-1.0" #NEVER EDIT THIS IF YOU DON'T KNOW WHAT ARE YOU DOING

@@ -1,4 +1,8 @@
 import sys
+import uuid
+import os
+import shutil
+from playwright.sync_api import Playwright, sync_playwright
 import tkinter as tk
 import tkinter.messagebox as msgbox
 import tkinter.simpledialog as simpledialog
@@ -6,6 +10,7 @@ import tkinter.simpledialog as simpledialog
 from log_writer import logger
 import core
 import config
+import browser
 
 def get_schematic(description):
     """
@@ -89,12 +94,35 @@ def generate_schematic():
 
     schem.save("generated", name, version_tag)
 
-    msgbox.showinfo("Success", "Generated. Get your schem file in folder generated.")
+    msgbox.showinfo("Success", f"Generated with file name \"{name}.schem\". Get your schem file in folder generated.")
 
     generate_button.config(state=tk.NORMAL, text="Generate")
+    render_button.pack()
+
+def render_schematic():
+    render_button.config(state=tk.DISABLED, text="Rendering...")
+
+    msgbox.showinfo("Info", "Rendering the schematic. It will take 15 seconds. DO NOT CLOSE THE PROGRAM.")
+
+    try:
+        os.remove("temp/waiting_for_upload.schem")
+        os.remove("temp/screenshot.png")
+    except FileNotFoundError:
+        pass
+
+    shutil.copy(f"generated/{name}.schem", "temp/waiting_for_upload.schem")
+    with sync_playwright() as playwright:
+        browser.run(playwright)
+
+    render_button.config(state=tk.NORMAL, text="Render")
+
+    image = tk.PhotoImage(file="temp/screenshot.png")
+    image = image.subsample(4)
+    rendered_image = tk.Label(window, image=image)
+    rendered_image.pack()
 
 def Application():
-    global version_entry, name_entry, description_entry, generate_button
+    global window, version_entry, description_entry, generate_button, render_button, rendered_image
 
     window = tk.Tk()
     window.title("BuilderGPT")
@@ -121,6 +149,8 @@ def Application():
 
     generate_button = tk.Button(window, text="Generate", command=generate_schematic)
     generate_button.pack()
+
+    render_button = tk.Button(window, text="Render", command=render_schematic)
 
     window.mainloop()
 
