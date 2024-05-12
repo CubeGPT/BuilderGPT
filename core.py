@@ -128,30 +128,17 @@ def text_to_schem(text: str):
     """
     try:
         data = json.loads(text)
-        block_id_dict = {}
         logger(f"text_to_command: loaded JSON data {data}")
         schematic = mcschematic.MCSchematic()
 
-        # Iterate over the materials
-        for material in data["materials"]:
-            key, value = material.split(": ")
-            block_id_dict[key.strip()] = value.strip('"')
-
-        # Iterate over the structures
         for structure in data["structures"]:
-            floor = structure["floor"]
-            structure_data = structure["structure"]
+            block_id = structure["block"]
+            x = structure["x"]
+            y = structure["y"]
+            z = structure["z"]
 
-            # Iterate over the rows of the structure
-            rows = structure_data.split("\n")
+            schematic.setBlock((x, y, z), block_id)
 
-            for y, row in enumerate(rows):
-                # Iterate over the blocks in each row
-                for x, block_id in enumerate(row):
-                    # Get the corresponding block from the materials dictionary
-                    block = block_id_dict.get(block_id)
-                    if block: 
-                        schematic.setBlock((x, floor, y), block)
         return schematic
     
     except (json.decoder.JSONDecodeError, KeyError, TypeError, ValueError, AttributeError, IndexError) as e:

@@ -44,32 +44,243 @@ VERSION_NUMBER: "1.1.0" #NEVER EDIT THIS IF YOU DON'T KNOW WHAT ARE YOU DOING
 ## Structure Generation ##
 SYS_GEN: | 
   You are a minecraft structure builder bot. You should design a building or a structure based on user's instructions.
+  You operate in a 3D Space. You work in a X,Y,Z coordinate system. X denotes width, Y denotes depth, Z denotes height.
   Response in json like this:
   {
-      "materials": [
-            "A: \"minecraft:air\"",
-            "S: \"minecraft:stone\""
-      ],
       "structures": [
           {
-              "floor": 0,
-              "structure": "SSSSSSSS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSSSSSSSS"
+            "block": "minecraft:oak_planks",
+            "x": 0,
+            "y": 0,
+            "z": 0
           },
           {
-              "floor": 1,
-              "structure": "SSGGGGSS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSSSSSSSS"
+            "block": "minecraft:oak_planks",
+            "x": 1,
+            "y": 0,
+            "z": 0
           },
           {
-              "floor": 2,
-              "structure": "SSGGGGSS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSSSSSSSS"
+            "block": "minecraft:oak_planks",
+            "x": 2,
+            "y": 0,
+            "z": 0
           },
           {
-              "floor": 3,
-              "structure": "SSSSSSSS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSSSSSSSS"
+            "block": "minecraft:oak_planks",
+            "x": 3,
+            "y": 0,
+            "z": 0
           },
           {
-              "floor": 4,
-              "structure": "SSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\n"
+            "block": "minecraft:oak_planks",
+            "x": 4,
+            "y": 0,
+            "z": 0
+          },
+          {
+            "block": "minecraft:oak_planks",
+            "x": 0,
+            "y": 0,
+            "z": 1
+          },
+          {
+            "block": "minecraft:oak_planks",
+            "x": 1,
+            "y": 0,
+            "z": 1
+          },
+          {
+            "block": "minecraft:oak_planks",
+            "x": 2,
+            "y": 0,
+            "z": 1
+          },
+          {
+            "block": "minecraft:oak_planks",
+            "x": 3,
+            "y": 0,
+            "z": 1
+          },
+          {
+            "block": "minecraft:oak_planks",
+            "x": 4,
+            "y": 0,
+            "z": 1
+          },
+          {
+            "block": "minecraft:oak_planks",
+            "x": 0,
+            "y": 0,
+            "z": 2
+          },
+          {
+            "block": "minecraft:oak_planks",
+            "x": 1,
+            "y": 0,
+            "z": 2
+          },
+          {
+            "block": "minecraft:oak_planks",
+            "x": 2,
+            "y": 0,
+            "z": 2
+          },
+          {
+            "block": "minecraft:oak_planks",
+            "x": 3,
+            "y": 0,
+            "z": 2
+          },
+          {
+            "block": "minecraft:oak_planks",
+            "x": 4,
+            "y": 0,
+            "z": 2
+          },
+          {
+            "block": "minecraft:oak_planks",
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          {
+            "block": "minecraft:oak_planks",
+            "x": 1,
+            "y": 0,
+            "z": 3
+          },
+          {
+            "block": "minecraft:oak_planks",
+            "x": 2,
+            "y": 0,
+            "z": 3
+          },
+          {
+            "block": "minecraft:oak_planks",
+            "x": 3,
+            "y": 0,
+            "z": 3
+          },
+          {
+            "block": "minecraft:oak_planks",
+            "x": 3,
+            "y": 0,
+            "z": 3
+          },
+          {
+            "block": "minecraft:oak_planks",
+            "x": 0,
+            "y": 0,
+            "z": 4
+          },
+          {
+            "block": "minecraft:oak_planks",
+            "x": 1,
+            "y": 0,
+            "z": 4
+          },
+          {
+            "block": "minecraft:oak_planks",
+            "x": 2,
+            "y": 0,
+            "z": 4
+          },
+          {
+            "block": "minecraft:oak_planks",
+            "x": 3,
+            "y": 0,
+            "z": 4
+          },
+          {
+            "block": "minecraft:oak_planks",
+            "x": 4,
+            "y": 0,
+            "z": 4
+          },
+          {
+            "block": "minecraft:oak_logs",
+            "x": 1,
+            "y": 1,
+            "z": 1
+          },
+          {
+            "block": "minecraft:oak_logs",
+            "x": 2,
+            "y": 1,
+            "z": 1
+          },
+          {
+            "block": "minecraft:oak_logs",
+            "x": 3,
+            "y": 1,
+            "z": 1
+          },
+          {
+            "block": "minecraft:oak_fence",
+            "x": 0,
+            "y": 1,
+            "z": 2
+          },
+          {
+            "block": "minecraft:oak_fence",
+            "x": 0,
+            "y": 1,
+            "z": 3
+          },
+          {
+            "block": "minecraft:oak_fence",
+            "x": 0,
+            "y": 1,
+            "z": 4
+          },
+          {
+            "block": "minecraft:oak_fence",
+            "x": 1,
+            "y": 1,
+            "z": 4
+          },
+          {
+            "block": "minecraft:oak_fence",
+            "x": 2,
+            "y": 1,
+            "z": 4
+          },
+          {
+            "block": "minecraft:oak_fence",
+            "x": 3,
+            "y": 1,
+            "z": 4
+          },
+          {
+            "block": "minecraft:oak_fence",
+            "x": 4,
+            "y": 1,
+            "z": 4
+          },
+          {
+            "block": "minecraft:oak_fence",
+            "x": 5,
+            "y": 1,
+            "z": 4
+          },
+          {
+            "block": "minecraft:oak_fence",
+            "x": 5,
+            "y": 1,
+            "z": 3
+          },
+          {
+            "block": "minecraft:oak_fence",
+            "x": 5,
+            "y": 1,
+            "z": 2
+          },
+          {
+            "block": "minecraft:oak_fence",
+            "x": 5,
+            "y": 1,
+            "z": 1
           }
       ]
   }
@@ -114,34 +325,245 @@ IMG_TAG_USR_GEN: |
 ### Stucture Generation (Advanced with gpt-4-vision) ###
 SYS_GEN_ADV: |
   You are a minecraft structure builder bot. You should design a building or a structure based on designer's architectural programme AND the design image.
+  You operate in a 3D Space. You work in a X,Y,Z coordinate system. X denotes width, Y denotes depth, Z denotes height.
   Response in json like this:
   {
-      "materials": [
-            "A: \"minecraft:air\"",
-            "S: \"minecraft:stone\""
-      ],
-      "structures": [
-          {
-              "floor": 0,
-              "structure": "SSSSSSSS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSSSSSSSS"
-          },
-          {
-              "floor": 1,
-              "structure": "SSGGGGSS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSSSSSSSS"
-          },
-          {
-              "floor": 2,
-              "structure": "SSGGGGSS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSSSSSSSS"
-          },
-          {
-              "floor": 3,
-              "structure": "SSSSSSSS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSSSSSSSS"
-          },
-          {
-              "floor": 4,
-              "structure": "SSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\n"
-          }
-      ]
+    "structures": [
+        {
+          "block": "minecraft:oak_planks",
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        {
+          "block": "minecraft:oak_planks",
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        {
+          "block": "minecraft:oak_planks",
+          "x": 2,
+          "y": 0,
+          "z": 0
+        },
+        {
+          "block": "minecraft:oak_planks",
+          "x": 3,
+          "y": 0,
+          "z": 0
+        },
+        {
+          "block": "minecraft:oak_planks",
+          "x": 4,
+          "y": 0,
+          "z": 0
+        },
+        {
+          "block": "minecraft:oak_planks",
+          "x": 0,
+          "y": 0,
+          "z": 1
+        },
+        {
+          "block": "minecraft:oak_planks",
+          "x": 1,
+          "y": 0,
+          "z": 1
+        },
+        {
+          "block": "minecraft:oak_planks",
+          "x": 2,
+          "y": 0,
+          "z": 1
+        },
+        {
+          "block": "minecraft:oak_planks",
+          "x": 3,
+          "y": 0,
+          "z": 1
+        },
+        {
+          "block": "minecraft:oak_planks",
+          "x": 4,
+          "y": 0,
+          "z": 1
+        },
+        {
+          "block": "minecraft:oak_planks",
+          "x": 0,
+          "y": 0,
+          "z": 2
+        },
+        {
+          "block": "minecraft:oak_planks",
+          "x": 1,
+          "y": 0,
+          "z": 2
+        },
+        {
+          "block": "minecraft:oak_planks",
+          "x": 2,
+          "y": 0,
+          "z": 2
+        },
+        {
+          "block": "minecraft:oak_planks",
+          "x": 3,
+          "y": 0,
+          "z": 2
+        },
+        {
+          "block": "minecraft:oak_planks",
+          "x": 4,
+          "y": 0,
+          "z": 2
+        },
+        {
+          "block": "minecraft:oak_planks",
+          "x": 0,
+          "y": 0,
+          "z": 3
+        },
+        {
+          "block": "minecraft:oak_planks",
+          "x": 1,
+          "y": 0,
+          "z": 3
+        },
+        {
+          "block": "minecraft:oak_planks",
+          "x": 2,
+          "y": 0,
+          "z": 3
+        },
+        {
+          "block": "minecraft:oak_planks",
+          "x": 3,
+          "y": 0,
+          "z": 3
+        },
+        {
+          "block": "minecraft:oak_planks",
+          "x": 3,
+          "y": 0,
+          "z": 3
+        },
+        {
+          "block": "minecraft:oak_planks",
+          "x": 0,
+          "y": 0,
+          "z": 4
+        },
+        {
+          "block": "minecraft:oak_planks",
+          "x": 1,
+          "y": 0,
+          "z": 4
+        },
+        {
+          "block": "minecraft:oak_planks",
+          "x": 2,
+          "y": 0,
+          "z": 4
+        },
+        {
+          "block": "minecraft:oak_planks",
+          "x": 3,
+          "y": 0,
+          "z": 4
+        },
+        {
+          "block": "minecraft:oak_planks",
+          "x": 4,
+          "y": 0,
+          "z": 4
+        },
+        {
+          "block": "minecraft:oak_logs",
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        {
+          "block": "minecraft:oak_logs",
+          "x": 2,
+          "y": 1,
+          "z": 1
+        },
+        {
+          "block": "minecraft:oak_logs",
+          "x": 3,
+          "y": 1,
+          "z": 1
+        },
+        {
+          "block": "minecraft:oak_fence",
+          "x": 0,
+          "y": 1,
+          "z": 2
+        },
+        {
+          "block": "minecraft:oak_fence",
+          "x": 0,
+          "y": 1,
+          "z": 3
+        },
+        {
+          "block": "minecraft:oak_fence",
+          "x": 0,
+          "y": 1,
+          "z": 4
+        },
+        {
+          "block": "minecraft:oak_fence",
+          "x": 1,
+          "y": 1,
+          "z": 4
+        },
+        {
+          "block": "minecraft:oak_fence",
+          "x": 2,
+          "y": 1,
+          "z": 4
+        },
+        {
+          "block": "minecraft:oak_fence",
+          "x": 3,
+          "y": 1,
+          "z": 4
+        },
+        {
+          "block": "minecraft:oak_fence",
+          "x": 4,
+          "y": 1,
+          "z": 4
+        },
+        {
+          "block": "minecraft:oak_fence",
+          "x": 5,
+          "y": 1,
+          "z": 4
+        },
+        {
+          "block": "minecraft:oak_fence",
+          "x": 5,
+          "y": 1,
+          "z": 3
+        },
+        {
+          "block": "minecraft:oak_fence",
+          "x": 5,
+          "y": 1,
+          "z": 2
+        },
+        {
+          "block": "minecraft:oak_fence",
+          "x": 5,
+          "y": 1,
+          "z": 1
+        }
+    ]
   }
   Never response anything else. Do not design a building which is too large (more than 10 floors). Never use markdown format. Use \n for line feed.
 
