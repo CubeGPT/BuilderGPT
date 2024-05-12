@@ -35,18 +35,22 @@ def get_schematic(description):
     
     return schem
 
-def get_schematic_advanced(description):
+def get_schematic_advanced(description, process_label_ui):
     print("(Advanced Mode) Generating programme...")
+    process_label_ui.config(text="(Advanced Mode) Generating programme...")
     programme = core.askgpt(config.BTR_DESC_SYS_GEN, config.BTR_DESC_USR_GEN.replace("%DESCRIPTION%", description), config.GENERATE_MODEL, disable_json_mode=True)
 
     print("(Advanced Mode) Generating image tag...")
+    process_label_ui.config(text="(Advanced Mode) Generating image tag...")
     image_tag = core.askgpt(config.IMG_TAG_SYS_GEN, config.IMG_TAG_USR_GEN.replace("%PROGRAMME%", programme), config.GENERATE_MODEL, disable_json_mode=True)
 
     print("(Advanced Mode) Generating image...")
+    process_label_ui.config(text="(Advanced Mode) Generating image...")
     tag = image_tag + ", minecraft)"
     image_url = core.ask_dall_e(tag)
 
     print("(Advanced Mode) Generating schematic...")
+    process_label_ui.config(text="(Advanced Mode) Generating schematic...")
     response = core.askgpt(config.SYS_GEN_ADV, config.USR_GEN_ADV.replace("%DESCRIPTION%", description), config.VISION_MODEL, image_url=image_url)
 
     schem = core.text_to_schem(response)
@@ -67,6 +71,7 @@ def generate_schematic():
     global name
 
     generate_button.config(state=tk.DISABLED, text="Generating...")
+    process_label.pack()
 
     if config.ADVANCED_MODE:
         msgbox.showwarning("Warning", "You are using advanced mode. This mode will generate schematic with higher quality, but it may take longer to generate.")
@@ -80,7 +85,7 @@ def generate_schematic():
     logger(f"console: input description {description}")
 
     if config.ADVANCED_MODE:
-        schem = get_schematic_advanced(description)
+        schem = get_schematic_advanced(description, process_label)
     else:
         schem = get_schematic(description)
     
@@ -102,6 +107,8 @@ def generate_schematic():
 
     generate_button.config(state=tk.NORMAL, text="Generate")
     render_button.pack()
+
+    process_label.pack_forget()
 
 def render_schematic():
     render_button.config(state=tk.DISABLED, text="Rendering...")
@@ -126,7 +133,7 @@ def render_schematic():
     rendered_image.pack()
 
 def Application():
-    global window, version_entry, description_entry, generate_button, render_button, rendered_image
+    global window, version_entry, description_entry, generate_button, render_button, process_label
 
     window = tk.Tk()
     window.title("BuilderGPT")
@@ -148,6 +155,8 @@ def Application():
 
     generate_button = tk.Button(window, text="Generate", command=generate_schematic)
     generate_button.pack()
+
+    process_label = tk.Label(window, text="Processing")
 
     render_button = tk.Button(window, text="Render", command=render_schematic)
 
