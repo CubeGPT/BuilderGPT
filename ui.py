@@ -6,6 +6,7 @@ from playwright.sync_api import Playwright, sync_playwright
 import tkinter as tk
 import tkinter.messagebox as msgbox
 import tkinter.simpledialog as simpledialog
+import tkinter.filedialog as filedialog
 
 from log_writer import logger
 import core
@@ -103,7 +104,13 @@ def generate_schematic():
 
     schem.save("generated", name, version_tag)
 
-    msgbox.showinfo("Success", f"Generated with file name \"{name}.schem\". Get your schem file in folder generated.")
+    is_save_as = msgbox.askyesno("Info", "Schematic generated successfully. Do you want to save the generated schematic to a different location? (If no, it will be saved in the default folder generated/)")
+    if is_save_as:
+        save_as_path = filedialog.asksaveasfilename(defaultextension=".schem", filetypes=[("Schematic files", "*.schem")], initialfile=f"{name}.schem", title="Save the schematic as")
+        shutil.copy(f"generated/{name}.schem", save_as_path)
+        msgbox.showinfo("Info", f"Schematic saved as {save_as_path}")
+    else:
+        msgbox.showinfo("Info", f"Schematic saved in the default folder generated/{name}.schem")
 
     generate_button.config(state=tk.NORMAL, text="Generate")
     render_button.pack()
