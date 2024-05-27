@@ -2,9 +2,6 @@ from openai import OpenAI
 import mcschematic
 import sys
 import json
-import requests
-import base64
-import uuid
 
 from log_writer import logger
 import config

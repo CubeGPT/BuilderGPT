@@ -1,4 +1,4 @@
-import re, time
+import time
 import config
 from playwright.sync_api import Playwright, sync_playwright, expect
 
