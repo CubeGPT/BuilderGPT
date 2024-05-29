@@ -3,17 +3,19 @@ from cx_Freeze import setup, Executable
 import config
 
 files = [
-    "browser.py",
-    "config.py",
+    #"browser.py",
+    #"config.py",
     "config.yaml",
-    "console.py",
-    "core.py",
+    #"console.py",
+    #"core.py",
     "LICENSE",
-    "log_writer.py",
+    #"log_writer.py",
     "logo.png",
     "README.md",
     "requirements.txt",
-    "ui.py"
+    "generated",
+    "logs",
+    "temp"
 ]
 
 setup(name='BuilderGPT',
