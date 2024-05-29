@@ -1,6 +1,5 @@
 openai>=1.13.3
 pyyaml
-tkinter
 cx_Freeze
 playwright
 uuid
