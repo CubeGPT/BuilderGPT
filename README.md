@@ -87,25 +87,42 @@ After the user enters a requirement, the program uses `gpt-4-preview` to expand 
 The program then parses this `json` response. Then it uploads the image (headless) to cubical.xyz and downloads the rendered image from the site using `playwright`.
 
 ## Requirements
+
+### Plan A. Windows/Linux (executable edition)
+
+> [!WARNING]
+> The version of the executable is still in the testing process. Plan B is recommended if possible.
+
+Nothing. Just download the executable file and run it.
+
+### Plan B. Python (Any operating systems; Recommend if possible)
+
 You can use BukkitGPT on any device with [Python 3+](https://www.python.org/).  
 
-And you need to install this package:
+And you need to install the depencies with this command:
 ```
-pip install openai
+pip install -r requirements.txt
 ```
 
 ## Quick Start
 
 *(Make sure you have the [Python](https://www.python.org) environment installed on your computer)*
 
-### UI (HIGHLY RECOMMEND)
-1. Download `Source Code.zip` from [the release page]([https:///](https://github.com/CubeGPT/BuilderGPT/releases)) and unzip it.
+### Executable/UI
+1. Download `windows-build.zip` or `linux-build.zip` from [the release page](https://https://github.com/CubeGPT/BuilderGPT/releases) and unzip it.
+2. Edit `config.yaml`, fill in your OpenAI Apikey. If you don't know how, remember that [Google](https://www.google.com/) and [Bing](https://www.bing.com/) are always your best friends.
+3. Run `ui.exe`, enter the description and let GPT generate the structure.
+4. Find your structure in `/generated/<name>.schem`.
+5. Import the file into the game via worldedit or other tools. (Google is your best friend~~)
+
+### Python/UI (RECOMMEND)
+1. Download `Source Code.zip` from [the release page](https://https://github.com/CubeGPT/BuilderGPT/releases) and unzip it.
 2. Edit `config.yaml`, fill in your OpenAI Apikey. If you don't know how, remember that [Google](https://www.google.com/) and [Bing](https://www.bing.com/) are always your best friends.
 3. Run `ui.py` (bash `python ui.py`), enter the description and let GPT generate the structure.
 4. Find your structure in `/generated/<name>.schem`.
 5. Import the file into the game via worldedit or other tools. (Google is your best friend~~)
 
-### Console
+### Python/Console
 1. Download `Source Code.zip` from [the release page]([https:///](https://github.com/CubeGPT/BuilderGPT/releases)) and unzip it.
 2. Edit `config.yaml`, fill in your OpenAI Apikey. If you don't know how, remember that [Google](https://www.google.com/) and [Bing](https://www.bing.com/) are always your best friends.
 3. Run `console.py` (bash `python console.py`), enter the description and let GPT generate the structure.
