@@ -32,7 +32,7 @@ jobs:
       - name: Zip build folder
         run: |
           cd build
-          zip -r ../windows-build.zip .
+          Compress-Archive -Path . -DestinationPath ../windows-build.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
