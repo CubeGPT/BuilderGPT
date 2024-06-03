@@ -3,22 +3,22 @@
 # GPT SETTINGS #
 # Get your api key from openai. Remember google/bing is always your best friend.
 # Model names: gpt-4-turbo-preview, gpt-3.5-turbo, etc.
-# Recommend -> gpt-4-turbo-preview, which codes more accurately and is less likely to write bugs, but is more expensive.
+# Recommend -> gpt-4-turbo (Better performance, more expensive), gpt-4-o (Good performance, cheaper)
 
 API_KEY: "" # Free API Key with GPT-4 access: https://github.com/CubeGPT/.github/discussions/1
 BASE_URL: "https://api.openai.com/v1/chat/completions"
 
-GENERATE_MODEL: "gpt-4-turbo-preview" # Don't use gpt-4, because this model is longer supports json modes.
+GENERATE_MODEL: "gpt-4-turbo" # Don't use gpt-4, because this model is longer supports json modes.
 
 
 # ADVANCED MODE #
-# This mode is experimental. But we highly recommend you to enable this mode for better performance.
-ADVANCED_MODE: True
+# This mode is experimental. This will enrich the aesthetics of the generated structure, but may affect the quality of the output to some extent. It also consumes more tokens when this mode is turned on, but we still recommend turning it on.
+ADVANCED_MODE: False
 IMAGE_GENERATION_MODEL: "dall-e-3"
 IMAGE_SIZE: "1024x1024"
 VISION_MODEL: "gpt-4-vision-preview"
 
-# Note: If you are using the free API key above, you can't use the advanced mode since it doesn't support dall-e-3 and gpt-4-vision-preview models.
+# Note: If you are using the free API key we provided, you can't use the advanced mode since it doesn't support dall-e-3 and gpt-4-vision-preview models.
 USE_DIFFERENT_APIKEY_FOR_DALLE_MODEL: False
 DALLE_API_KEY: ""
 DALLE_BASE_URL: "https://api.openai.com/v1/chat/completions"
