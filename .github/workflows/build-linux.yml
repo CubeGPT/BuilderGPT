@@ -2,8 +2,6 @@ name: Linux Builds
 
 on:
   push:
-    branches:
-      - main
   release:
     types:
       - created
