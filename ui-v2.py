@@ -157,6 +157,9 @@ root = CreateQGUI(title="BuilderGPT",
                   tab_names=["Generate", "Render", "Settings"]
                   )
 
+# Initialize Core
+core.initialize()
+
 # Banner
 root.add_banner_tool(GitHub("https://github.com/CubeGPT/BuilderGPT"))
 
