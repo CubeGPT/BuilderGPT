@@ -2,6 +2,7 @@ from openai import OpenAI
 import mcschematic
 import sys
 import json
+import locale
 
 from log_writer import logger
 import config
@@ -18,6 +19,7 @@ def initialize():
     Returns:
         None
     """
+    locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
     logger(f"Launch. Software version {config.VERSION_NUMBER}, platform {sys.platform}")
 
 def askgpt(system_prompt: str, user_prompt: str, model_name: str, disable_json_mode: bool = False, image_url: str = None):

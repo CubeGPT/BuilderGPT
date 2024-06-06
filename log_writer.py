@@ -22,5 +22,5 @@ def logger(text: str):
 
     os.makedirs(os.path.dirname(log_filename), exist_ok=True)
 
-    with open(log_filename + ".log", "a") as log_file:
+    with open(log_filename + ".log", "a", encoding='utf-8') as log_file:
         log_file.write(log_line)
