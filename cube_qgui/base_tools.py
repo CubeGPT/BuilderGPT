@@ -4,11 +4,14 @@
 # Please indicate the source for reprinting.
 import threading
 import traceback
+import sys
 from typing import Dict
 
 import tkinter
 
 from cube_qgui.manager import *
+
+from log_writer import logger
 
 
 def check_callable(bind_func):
@@ -168,9 +171,12 @@ class BaseTool:
                         try:
                             func(obj)
                         except Exception as e:
-                            print("-----以下为异常信息-----")
+                            print("-----ERROR MSG START-----")
                             print(traceback.print_exc())
-                            print("-----以上为异常信息-----")
+                            print("-----ERROR MSG END-----")
+
+                            # Record the error message to the log
+                            logger(f"Error: {e}")
                         if end_func:
                             end_func()
                         # 清除Flag，此时按钮可以再次点击
