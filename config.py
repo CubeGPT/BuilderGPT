@@ -10,14 +10,34 @@ with open("config.yaml", "r") as conf:
         logger(f"config: {key} -> {value}")
 
 def edit_config(key, value):
-    with open("config.yaml", "r") as file:
-        lines = file.readlines()
+    """
+    Edits the config file.
 
-    for i, line in enumerate(lines):
-        if f"{key}:" in line:
-            lines[i] = line.replace(line.split(":")[1].strip().strip('"'), f"{value}")
+    Args:
+        key (str): The key to edit.
+        value (str): The value to set.
 
-    with open("config.yaml", "w") as file:
-        file.writelines(lines)
+    Returns:
+        bool: True
+    """
 
-    logger(f"edit_config: {key} -> {value}")
+    with open("config.yaml", "r") as conf:
+        config_content = conf.readlines()
+    
+    with open("config.yaml", "w") as conf:
+        for line in config_content:
+            if line.startswith(key):
+                if value == True:
+                    write_value = "True"
+                elif value == False:
+                    write_value = "False"
+                else:
+                    write_value = f"\"{value}\""
+                if "#" in line:
+                    conf.write(f"{key}: {write_value} # {line.split('#')[1]}\n")
+                else:
+                    conf.write(f"{key}: {write_value}\n")
+            else:
+                conf.write(line)
+
+    return True

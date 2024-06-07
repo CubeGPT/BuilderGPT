@@ -35,8 +35,8 @@ NAMING_MODEL: "gpt-3.5-turbo"
 RENDERING_URL: "https://beta.cubical.xyz/" # Don't change this unless you know what you are doing.
 
 # DEVELOPER SETTINGS #
-DEBUG_MODE: True
-VERSION_NUMBER: "2.0.0" #NEVER EDIT THIS IF YOU DON'T KNOW WHAT ARE YOU DOING
+DEBUG_MODE: False
+VERSION_NUMBER: "2.0.0" #  NEVER EDIT THIS IF YOU DON'T KNOW WHAT ARE YOU DOING
 
 # PROMPT SETTINGS #
 # If you don't know what it is, please don't touch it. Be sure to backup before editing.
