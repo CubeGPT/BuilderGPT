@@ -1,126 +1,122 @@
-import sys
-import uuid
+from cube_qgui.__init__ import CreateQGUI
+from cube_qgui.banner_tools import *
+from cube_qgui.notebook_tools import *
+from playwright.sync_api import Playwright, sync_playwright
+from tkinter import filedialog
 import os
 import shutil
-from playwright.sync_api import Playwright, sync_playwright
-import tkinter as tk
-import tkinter.messagebox as msgbox
-import tkinter.simpledialog as simpledialog
-import tkinter.filedialog as filedialog
+import uuid
 
-from log_writer import logger
-import core
+from log_writer import logger, get_log_filename
 import config
+import core
 import browser
 
-def get_schematic(description):
+def get_schematic(description, progressbar):
     """
-    Generates a schematic based on the given description.
+    Generate a schematic based on the given description.
 
     Args:
         description (str): The description of the schematic.
 
     Returns:
-        str: The generated schematic.
-
-    Raises:
-        SystemExit: If the schematic generation fails.
+        mcschematic.MCSchematic: The generated schematic.
     """
+    progressbar.set(20)
+
     response = core.askgpt(config.SYS_GEN, config.USR_GEN.replace("%DESCRIPTION%", description), config.GENERATE_MODEL)
+    progressbar.set(80)
 
     schem = core.text_to_schem(response)
-
-    if schem is None:
-        msgbox.showerror("Error", "Failed to generate the schematic. We recommend you to change the generating model to gpt-4-turbo-preview or other smarter models.")
-        sys.exit(1)
-    
-    return schem
-
-def get_schematic_advanced(description, process_label_ui):
-    print("(Advanced Mode) Generating programme...")
-    process_label_ui.config(text="(Advanced Mode) Generating programme...")
-    programme = core.askgpt(config.BTR_DESC_SYS_GEN, config.BTR_DESC_USR_GEN.replace("%DESCRIPTION%", description), config.GENERATE_MODEL, disable_json_mode=True)
-
-    print("(Advanced Mode) Generating image tag...")
-    process_label_ui.config(text="(Advanced Mode) Generating image tag...")
-    image_tag = core.askgpt(config.IMG_TAG_SYS_GEN, config.IMG_TAG_USR_GEN.replace("%PROGRAMME%", programme), config.GENERATE_MODEL, disable_json_mode=True)
-
-    print("(Advanced Mode) Generating image...")
-    process_label_ui.config(text="(Advanced Mode) Generating image...")
-    tag = image_tag + ", minecraft)"
-    image_url = core.ask_dall_e(tag)
-
-    print("(Advanced Mode) Generating schematic...")
-    process_label_ui.config(text="(Advanced Mode) Generating schematic...")
-    response = core.askgpt(config.SYS_GEN_ADV, config.USR_GEN_ADV.replace("%DESCRIPTION%", description), config.VISION_MODEL, image_url=image_url)
-
-    schem = core.text_to_schem(response)
+    progressbar.set(100)
 
     return schem
 
-def generate_schematic():
+def get_schematic_advanced(description, progressbar):
     """
-    Generates a schematic file based on user input.
+    Generates a schematic using advanced mode.
 
-    This function retrieves the version, name, and description from the user interface,
-    initializes the core functionality, and generates a plugin based on the provided description.
-    It then saves the generated schematic file in the 'generated' folder.
+    Args:
+        description (str): The description of the schematic.
 
     Returns:
-        None
+        mcschematic.MCSchematic: The generated schematic.
     """
-    global name
+    progressbar.set(10)
+    print("(Advanced Mode) Generating programme...")
+    programme = core.askgpt(config.BTR_DESC_SYS_GEN, config.BTR_DESC_USR_GEN.replace("%DESCRIPTION%", description), config.GENERATE_MODEL, disable_json_mode=True)
+    progressbar.set(30)
 
-    generate_button.config(state=tk.DISABLED, text="Generating...")
-    process_label.pack()
+    print("(Advanced Mode) Generating image tag...")
+    image_tag = core.askgpt(config.IMG_TAG_SYS_GEN, config.IMG_TAG_USR_GEN.replace("%PROGRAMME%", programme), config.GENERATE_MODEL, disable_json_mode=True)
+    progressbar.set(50)
+
+    print("(Advanced Mode) Generating image...")
+    tag = image_tag + ", minecraft)"
+    image_url = core.ask_dall_e(tag)
+    progressbar.set(60)
+
+    print("(Advanced Mode) Generating schematic...")
+    response = core.askgpt(config.SYS_GEN_ADV, config.USR_GEN_ADV.replace("%DESCRIPTION%", description), config.VISION_MODEL, image_url=image_url)
+    progressbar.set(90)
+
+    schem = core.text_to_schem(response)
+    progressbar.set(100)
+
+    return schem
+
+def generate(args: dict):
+    """
+    Generate a schematic based on the provided arguments.
+
+    Args:
+        args (dict): A dictionary containing the arguments for generating the schematic.
+            - "Description": The description of the schematic.
+            - "Game Version": The version of the game.
+
+    Returns:
+        bool: True
+    """
+    description = args["Description"].get()
+    game_version = args["Game Version"].get()
+
+    progressbar = args["Generation Progress"]
 
     if config.ADVANCED_MODE:
-        msgbox.showwarning("Warning", "You are using advanced mode. This mode will generate schematic with higher quality, but it may take longer to generate.")
-
-    msgbox.showinfo("Info", "It is expected to take 30 seconds to 5 minutes. The programme may \"not responding\", this is normal, just be patient. DO NOT CLOSE THE PROGRAM. Click the button below to start generating.")
-
-    version = version_entry.get()
-    description = description_entry.get()
-
-    logger(f"console: input version {version}")
-    logger(f"console: input description {description}")
-
-    if config.ADVANCED_MODE:
-        schem = get_schematic_advanced(description, process_label)
+        schem = get_schematic_advanced(description, progressbar)
     else:
-        schem = get_schematic(description)
-    
+        schem = get_schematic(description, progressbar)
+
     raw_name = core.askgpt(config.SYS_GEN_NAME, config.USR_GEN_NAME.replace("%DESCRIPTION%", description), config.NAMING_MODEL, disable_json_mode=True)
 
     name = raw_name + "-" + str(uuid.uuid4())
 
-    logger(f"console: Saving {name}.schem to generated/ folder.")
-    version_tag = core.input_version_to_mcs_tag(version)
-
-    while version_tag is None:
-        msgbox.showerror("Error", "Invalid version number. Please retype the version number.")
-        version = simpledialog.askstring("Reinput", "Please retype the version number (eg. 1.20.1): ")
-        core.input_version_to_mcs_tag(version)
+    version_tag = core.input_version_to_mcs_tag(game_version)
 
     schem.save("generated", name, version_tag)
 
-    is_save_as = msgbox.askyesno("Info", "Schematic generated successfully. Do you want to save the generated schematic to a different location? (If no, it will be saved in the default folder generated/)")
-    if is_save_as:
-        save_as_path = filedialog.asksaveasfilename(defaultextension=".schem", filetypes=[("Schematic files", "*.schem")], initialfile=f"{name}.schem", title="Save the schematic as")
-        shutil.copy(f"generated/{name}.schem", save_as_path)
-        msgbox.showinfo("Info", f"Schematic saved as {save_as_path}")
-    else:
-        msgbox.showinfo("Info", f"Schematic saved in the default folder generated/{name}.schem")
+    print("Schematic saved as " + name + ".schem")
 
-    generate_button.config(state=tk.NORMAL, text="Generate")
-    render_button.pack()
+    return True
 
-    process_label.pack_forget()
+def render(args: dict):
+    """
+    Renders a schematic file using the provided arguments.
 
-def render_schematic():
-    render_button.config(state=tk.DISABLED, text="Rendering...")
+    Args:
+        args (dict): A dictionary containing the necessary arguments for rendering.
 
-    msgbox.showinfo("Info", "Rendering the schematic. It will take 15 seconds. DO NOT CLOSE THE PROGRAM.")
+    Returns:
+        bool: True
+    """
+    progress_bar = args["Rendering Progress"]
+
+    progress_bar.set(0)
+    print("Start rendering...")
+
+    schematic_path = args["Schematic File Path"].get()
+
+    print(f"Set schematic path to {schematic_path}.")
 
     try:
         os.remove("temp/waiting_for_upload.schem")
@@ -128,50 +124,177 @@ def render_schematic():
     except FileNotFoundError:
         pass
 
-    shutil.copy(f"generated/{name}.schem", "temp/waiting_for_upload.schem")
+    progress_bar.set(10)
+
+    print("Copying schematic file...")
+    shutil.copy(schematic_path, "temp/waiting_for_upload.schem")
+    progress_bar.set(20)
+
+    print("Rendering...")
     with sync_playwright() as playwright:
-        browser.run(playwright)
+        browser.run(playwright, progress_bar)
 
-    render_button.config(state=tk.NORMAL, text="Render")
+    print("Rendering finished. Result:")
+    root.print_image("temp/screenshot.png")
 
-    image = tk.PhotoImage(file="temp/screenshot.png")
-    image = image.subsample(4)
-    rendered_image = tk.Label(window, image=image)
-    rendered_image.pack()
+    progress_bar.set(100)
 
-def Application():
-    global window, version_entry, description_entry, generate_button, render_button, process_label
+    return True
 
-    window = tk.Tk()
-    window.title("BuilderGPT")
-    
-    logo = tk.PhotoImage(file="logo.png")
-    logo = logo.subsample(4)
-    logo_label = tk.Label(window, image=logo)
-    logo_label.pack()
+def export_log(args: dict):
+    """
+    Exports the log file.
 
-    version_label = tk.Label(window, text="What's your minecraft version? (eg. 1.20.1):")
-    version_label.pack()
-    version_entry = tk.Entry(window)
-    version_entry.pack()
+    Args:
+        args (dict): A dictionary containing the necessary arguments.
 
-    description_label = tk.Label(window, text="What kind of structure would you like to generate? Describe as clear as possible:")
-    description_label.pack()
-    description_entry = tk.Entry(window)
-    description_entry.pack()
+    Returns:
+        bool: Always True.
+    """
+    log_filename = get_log_filename() + ".log"
 
-    generate_button = tk.Button(window, text="Generate", command=generate_schematic)
-    generate_button.pack()
+    filepath = filedialog.asksaveasfilename(defaultextension=".log", filetypes=[("Log Files", "*.log")])
 
-    process_label = tk.Label(window, text="Processing")
+    shutil.copy(log_filename, filepath)
 
-    render_button = tk.Button(window, text="Render", command=render_schematic)
+    MessageBox.info(f"Log file exported to {filepath}")
 
-    window.mainloop()
+    return True
 
-if __name__ == "__main__":
-    core.initialize()
-    Application()
-else:
-    print("Error: Please run ui.py as the main program instead of importing it from another program.")
-    logger("Exit: Running ui.py as an imported module.")
+def open_config(args: dict):
+    """
+    Opens the config file.
+
+    Args:
+        args (dict): A dictionary containing the necessary arguments.
+
+    Returns:
+        bool: Always True.
+    """
+    os.system("notepad config.yaml")
+
+    return True
+
+def save_apply_config(args: dict):
+    """
+    Saves and applies the configuration.
+
+    Args:
+        args (dict): A dictionary containing the necessary arguments.
+
+    Returns:
+        bool: Always True.
+    """
+    keys = ["API_KEY", "BASE_URL"]
+
+    for key in keys:
+        value = args[key].get()
+
+        if key == "ADVANCED_MODE":
+            value = True if value == 1 else False
+        else:
+            pass
+
+        config.edit_config(key, value)
+
+    config.load_config()
+
+    args["DevTool_CONFIG_API_KEY_DISPLAY"].set(f"CONFIG.API_KEY = {config.API_KEY}")
+    args["DevTools_CONFIG_BASE_URL_DISPLAY"].set(f"CONFIG.BASE_URL = {config.BASE_URL}")
+
+    return True
+
+def load_config(args: dict):
+    """
+    Loads the configuration.
+
+    Args:
+        args (dict): A dictionary containing the necessary arguments.
+
+    Returns:
+        bool: Always True.
+    """
+    config.load_config()
+
+    args["API_KEY"].set(config.API_KEY)
+    args["BASE_URL"].set(config.BASE_URL)
+
+    return True
+
+def print_args(args: dict):
+    """
+    Prints the arguments.
+
+    Args:
+        args (dict): A dictionary containing the arguments.
+
+    Returns:
+        bool: Always True.
+    """
+    for arg, v_fun in args.items():
+        print(f"Name: {arg}, Value: {v_fun.get()}")
+
+    return True
+
+def raise_error(args: dict):
+    """
+    Raises an error.
+
+    Args:
+        args (dict): A dictionary containing the arguments.
+    """
+    raise Exception("This is a test error.")
+
+root = CreateQGUI(title="BuilderGPT",
+                  tab_names=["Generate", "Render", "Settings", "DevTools"]
+                  )
+
+logger("Starting program.")
+
+# Initialize Core
+core.initialize()
+
+# Banner
+root.add_banner_tool(GitHub("https://github.com/CubeGPT/BuilderGPT"))
+root.add_banner_tool(BaseBarTool(bind_func=export_log, name="Export Log"))
+
+# Generate Page
+root.add_notebook_tool(InputBox(name="Game Version", default="1.20.1", label_info="Game Version", tab_index=0))
+root.add_notebook_tool(InputBox(name="Description", default="A simple house", label_info="Description", tab_index=0))
+
+root.add_notebook_tool(Progressbar(name="Generation Progress", title="Progress", tab_index=0))
+root.add_notebook_tool(RunButton(bind_func=generate, name="Generate", text="Generate", tab_index=0))
+
+# Render Page
+root.add_notebook_tool(ChooseFileTextButton(name="Schematic File Path", label_info="Schematic File", tab_index=1))
+root.add_notebook_tool(Progressbar(name="Rendering Progress", title="Progress", tab_index=1))
+root.add_notebook_tool(RunButton(bind_func=render, name="Render", text="Render", tab_index=1))
+
+# Settings Page
+root.add_notebook_tool(InputBox(name="API_KEY", default=config.API_KEY, label_info="API Key", tab_index=2))
+root.add_notebook_tool(InputBox(name="BASE_URL", default=config.BASE_URL, label_info="BASE URL", tab_index=2))
+
+config_buttons = HorizontalToolsCombine([
+     BaseButton(bind_func=save_apply_config, name="Save & Apply Config", text="Save & Apply", tab_index=2),
+     BaseButton(bind_func=load_config, name="Load Config", text="Load Config", tab_index=2),
+     BaseButton(bind_func=open_config, name="Open Config", text="Open Full Config", tab_index=2)
+])
+root.add_notebook_tool(config_buttons)
+
+# DevTools Page
+root.add_notebook_tool(Label(name="DevTool_DESCRIPTION", text="This is a testing page for developers. Ignore it if you are a normal user.", tab_index=3))
+root.add_notebook_tool(Label(name="DevTool_CONFIG_API_KEY_DISPLAY", text=f"CONFIG.API_KEY = {config.API_KEY}", tab_index=3))
+root.add_notebook_tool(Label(name="DevTools_CONFIG_BASE_URL_DISPLAY", text=f"CONFIG.BASE_URL = {config.BASE_URL}", tab_index=3))
+root.add_notebook_tool(RunButton(bind_func=print_args, name="Print Args", text="Print Args", tab_index=3))
+root.add_notebook_tool(RunButton(bind_func=raise_error, name="Raise Error", text="Raise Error", tab_index=3))
+
+# Sidebar
+root.set_navigation_about(author="CubeGPT Team",
+                              version=config.VERSION_NUMBER,
+                              github_url="https://github.com/CubeGPT/BuilderGPT",
+                              other_info=["Morden UI Test"])
+
+
+
+# Run
+root.run()
