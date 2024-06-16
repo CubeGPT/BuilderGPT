@@ -2,11 +2,12 @@ from cube_qgui.__init__ import CreateQGUI
 from cube_qgui.banner_tools import *
 from cube_qgui.notebook_tools import *
 from playwright.sync_api import Playwright, sync_playwright
+from tkinter import filedialog
 import os
 import shutil
 import uuid
 
-from log_writer import logger
+from log_writer import logger, get_log_filename
 import config
 import core
 import browser
@@ -140,6 +141,26 @@ def render(args: dict):
 
     return True
 
+def export_log(args: dict):
+    """
+    Exports the log file.
+
+    Args:
+        args (dict): A dictionary containing the necessary arguments.
+
+    Returns:
+        bool: Always True.
+    """
+    log_filename = get_log_filename() + ".log"
+
+    filepath = filedialog.asksaveasfilename(defaultextension=".log", filetypes=[("Log Files", "*.log")])
+
+    shutil.copy(log_filename, filepath)
+
+    MessageBox.info(f"Log file exported to {filepath}")
+
+    return True
+
 def open_config(args: dict):
     """
     Opens the config file.
@@ -235,7 +256,7 @@ core.initialize()
 
 # Banner
 root.add_banner_tool(GitHub("https://github.com/CubeGPT/BuilderGPT"))
-root.add_banner_tool(BaseBarTool)
+root.add_banner_tool(BaseBarTool(bind_func=export_log, name="Export Log"))
 
 # Generate Page
 root.add_notebook_tool(InputBox(name="Game Version", default="1.20.1", label_info="Game Version", tab_index=0))
