@@ -6,6 +6,8 @@ from tkinter import filedialog
 import os
 import shutil
 import uuid
+import time
+import threading
 
 from log_writer import logger, get_log_filename
 import config
@@ -22,10 +24,17 @@ def get_schematic(description, progressbar):
     Returns:
         mcschematic.MCSchematic: The generated schematic.
     """
-    progressbar.set(20)
+    # Start the progress bar update in a separate thread
+    progress_thread = threading.Thread(target=update_progress_bar, args=(progressbar, 20, 80, 0.75))
+    progress_thread.start()
 
     response = core.askgpt(config.SYS_GEN, config.USR_GEN.replace("%DESCRIPTION%", description), config.GENERATE_MODEL)
+
+    # Ensure progress reaches 80% once askgpt completes
     progressbar.set(80)
+
+    # Wait for the progress thread to finish
+    progress_thread.join()
 
     schem = core.text_to_schem(response)
     progressbar.set(100)
@@ -160,6 +169,15 @@ def export_log(args: dict):
     MessageBox.info(f"Log file exported to {filepath}")
 
     return True
+
+def update_progress_bar(progressbar, start, end, interval):
+    current = start
+    while current < end:
+        time.sleep(interval)
+        current += 1
+        progressbar.set(current)
+        if current >= end:
+            break
 
 def open_config(args: dict):
     """

@@ -284,7 +284,7 @@ SYS_GEN: |
           }
       ]
   }
-  Never response anything else. Do not design a building which is too large (more than 10 floors). Never use markdown format. Use \n for line feed.
+  Never response anything else. The schematic can be as large as 25*25*50 or even bigger. Never use markdown format. Use \n for line feed.
 
 USR_GEN: | 
   %DESCRIPTION%
