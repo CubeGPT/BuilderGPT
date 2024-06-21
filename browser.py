@@ -9,8 +9,17 @@ def run(playwright: Playwright, progress_bar: str=None) -> None:
             progress_bar.set(progress)
 
     browser = playwright.chromium.launch(headless=True)
+
+    set_progress(25)
+
     context = browser.new_context()
+
+    set_progress(30)
+
     page = context.new_page()
+
+    set_progress(35)
+
     page.goto(config.RENDERING_URL)
 
     set_progress(40)

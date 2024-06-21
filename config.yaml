@@ -36,7 +36,7 @@ RENDERING_URL: "https://beta.cubical.xyz/" # Don't change this unless you know w
 
 # DEVELOPER SETTINGS #
 DEBUG_MODE: False
-VERSION_NUMBER: "2.0.0" #  NEVER EDIT THIS IF YOU DON'T KNOW WHAT ARE YOU DOING
+VERSION_NUMBER: "2.0.0" #NEVER EDIT THIS IF YOU DON'T KNOW WHAT ARE YOU DOING
 
 # PROMPT SETTINGS #
 # If you don't know what it is, please don't touch it. Be sure to backup before editing.
@@ -284,7 +284,7 @@ SYS_GEN: |
           }
       ]
   }
-  Never response anything else. Do not design a building which is too large (more than 10 floors). Never use markdown format. Use \n for line feed.
+  Never response anything else. The schematic can be as large as 25*25*50 or even bigger. Never use markdown format. Use \n for line feed.
 
 USR_GEN: | 
   %DESCRIPTION%
