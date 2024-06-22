@@ -3,12 +3,12 @@ import config
 from playwright.sync_api import Playwright, sync_playwright, expect
 
 
-def run(playwright: Playwright, progress_bar: str=None) -> None:
+def run(playwright: Playwright, progress_bar: str=None, is_headless: bool=True) -> None:
     def set_progress(progress):
         if progress_bar is not None:
             progress_bar.set(progress)
 
-    browser = playwright.chromium.launch(headless=True)
+    browser = playwright.chromium.launch(headless=is_headless)
 
     set_progress(25)
 
@@ -46,10 +46,11 @@ def run(playwright: Playwright, progress_bar: str=None) -> None:
 
     download = download_info.value
     download.save_as("temp/screenshot.png")
-    page.close()
 
-    context.close()
-    browser.close()
+    if is_headless:
+        page.close()
+        context.close()
+        browser.close()
 
     set_progress(90)
 
