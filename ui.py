@@ -43,6 +43,12 @@ def get_schematic(description, progressbar):
     # Wait for the progress thread to finish
     progress_thread.join()
 
+    # Ensure progress reaches 80% once askgpt completes
+    progressbar.set(80)
+
+    # Wait for the progress thread to finish
+    progress_thread.join()
+
     schem = core.text_to_schem(response)
     progressbar.set(100)
 
