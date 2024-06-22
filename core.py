@@ -67,13 +67,15 @@ def askgpt(system_prompt: str, user_prompt: str, model_name: str, disable_json_m
     if disable_json_mode:
         response = client.chat.completions.create(
             model=model_name,
-            messages=messages
+            messages=messages,
+            timeout=120
         )
     else:
         response = client.chat.completions.create(
             model=model_name,
             response_format={"type": "json_object"},
-            messages=messages
+            messages=messages,
+            timeout=120
         )
 
     logger(f"askgpt: response {response}")
@@ -136,7 +138,18 @@ def text_to_schem(text: str):
             y = structure["y"]
             z = structure["z"]
 
-            schematic.setBlock((x, y, z), block_id)
+            if structure["type"] == "fill":
+                to_x = structure["toX"]
+                to_y = structure["toY"]
+                to_z = structure["toZ"]
+
+                for x in range(x, to_x + 1):
+                    for y in range(y, to_y + 1):
+                        for z in range(z, to_z + 1):
+                            schematic.setBlock((x, y, z), block_id)
+
+            else:
+                schematic.setBlock((x, y, z), block_id)
 
         return schematic
     
