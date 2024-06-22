@@ -28,7 +28,20 @@ def get_schematic(description, progressbar):
     progress_thread = threading.Thread(target=update_progress_bar, args=(progressbar, 20, 80, 0.75))
     progress_thread.start()
 
-    response = core.askgpt(config.SYS_GEN, config.USR_GEN.replace("%DESCRIPTION%", description), config.GENERATE_MODEL)
+    if config.GIVE_GPT_BLOCK_ID_LIST:
+        with open("block_id_list.txt", "r") as f:
+            block_id_list = f.read()
+        sys_gen = config.SYS_GEN + f"\n\nUsable Block ID List:\n{block_id_list}"
+    else:
+        sys_gen = config.SYS_GEN
+
+    response = core.askgpt(sys_gen, config.USR_GEN.replace("%DESCRIPTION%", description), config.GENERATE_MODEL)
+
+    # Ensure progress reaches 80% once askgpt completes
+    progressbar.set(80)
+
+    # Wait for the progress thread to finish
+    progress_thread.join()
 
     # Ensure progress reaches 80% once askgpt completes
     progressbar.set(80)
@@ -139,9 +152,16 @@ def render(args: dict):
     shutil.copy(schematic_path, "temp/waiting_for_upload.schem")
     progress_bar.set(20)
 
+    if args["Headless-Enable"].get() == 1:
+        print("Headless mode enabled.")
+        is_headless = True
+    else:
+        print("Headless mode disabled.")
+        is_headless = False
+
     print("Rendering...")
     with sync_playwright() as playwright:
-        browser.run(playwright, progress_bar)
+        browser.run(playwright, progress_bar, is_headless=is_headless)
 
     print("Rendering finished. Result:")
     root.print_image("temp/screenshot.png")
@@ -286,7 +306,11 @@ root.add_notebook_tool(RunButton(bind_func=generate, name="Generate", text="Gene
 # Render Page
 root.add_notebook_tool(ChooseFileTextButton(name="Schematic File Path", label_info="Schematic File", tab_index=1))
 root.add_notebook_tool(Progressbar(name="Rendering Progress", title="Progress", tab_index=1))
-root.add_notebook_tool(RunButton(bind_func=render, name="Render", text="Render", tab_index=1))
+render_button = HorizontalToolsCombine([
+    ToggleButton(options=("Enable", 1), name="Headless", title="Headless",tab_index=1),
+    RunButton(bind_func=render, name="Render", text="Render", tab_index=1)
+])
+root.add_notebook_tool(render_button)
 
 # Settings Page
 root.add_notebook_tool(InputBox(name="API_KEY", default=config.API_KEY, label_info="API Key", tab_index=2))
