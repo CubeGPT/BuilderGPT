@@ -108,12 +108,14 @@ pip install -r requirements.txt
 
 *(Make sure you have the [Python](https://www.python.org) environment installed on your computer)*
 
+<!--
 ### Executable/UI
 1. Download `windows-build.zip` or `linux-build.zip` from [the release page](https://https://github.com/CubeGPT/BuilderGPT/releases) and unzip it.
 2. Edit `config.yaml`, fill in your OpenAI Apikey. If you don't know how, remember that [Google](https://www.google.com/) and [Bing](https://www.bing.com/) are always your best friends.
 3. Run `ui.exe` (Windows) or `ui` (Linux), enter the description and let GPT generate the structure.
 4. Find your structure in `/generated/<name>.schem`.
 5. Import the file into the game via worldedit or other tools. (Google is your best friend~~)
+-->
 
 ### Python/UI (RECOMMEND)
 1. Download `Source Code.zip` from [the release page](https://https://github.com/CubeGPT/BuilderGPT/releases) and unzip it.
