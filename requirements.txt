@@ -3,3 +3,4 @@ pyyaml
 cx_Freeze
 playwright
 uuid
+ttkbootstrap
