@@ -25,7 +25,7 @@ def get_schematic(description, progressbar):
         mcschematic.MCSchematic: The generated schematic.
     """
     # Start the progress bar update in a separate thread
-    progress_thread = threading.Thread(target=update_progress_bar, args=(progressbar, 20, 80, 0.75))
+    progress_thread = threading.Thread(target=update_progress_bar, args=(progressbar, 0, 95, 0.75))
     progress_thread.start()
 
     if config.GIVE_GPT_BLOCK_ID_LIST:
@@ -37,14 +37,11 @@ def get_schematic(description, progressbar):
 
     response = core.askgpt(sys_gen, config.USR_GEN.replace("%DESCRIPTION%", description), config.GENERATE_MODEL)
 
-    # Ensure progress reaches 80% once askgpt completes
-    progressbar.set(80)
-
     # Wait for the progress thread to finish
     progress_thread.join()
 
     # Ensure progress reaches 80% once askgpt completes
-    progressbar.set(80)
+    progressbar.set(95)
 
     # Wait for the progress thread to finish
     progress_thread.join()
