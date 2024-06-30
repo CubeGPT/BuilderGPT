@@ -64,7 +64,7 @@ def askgpt(system_prompt: str, user_prompt: str, model_name: str, disable_json_m
     logger(f"askgpt: user {user_prompt}")
 
     # Create a chat completion
-    if disable_json_mode:
+    if disable_json_mode or config.FORCE_DISABLE_JSON_MODE:
         response = client.chat.completions.create(
             model=model_name,
             messages=messages,

@@ -10,6 +10,7 @@ BASE_URL: "https://api.openai.com/v1/chat/completions"
 
 GENERATE_MODEL: "gpt-4-turbo" # Don't use gpt-4, because this model is longer supports json modes.
 
+FORCE_DISABLE_JSON_MODE: True # For openai-formatting claude users.
 
 # ADVANCED MODE #
 # This mode is experimental. This will enrich the aesthetics of the generated structure, but may affect the quality of the output to some extent. It also consumes more tokens when this mode is turned on, but we still recommend turning it on.
