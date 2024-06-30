@@ -6,7 +6,7 @@
 # Recommend -> gpt-4-turbo (Better performance, more expensive), gpt-4-o (Good performance, cheaper)
 
 API_KEY: "" # Free API Key with GPT-4 access: https://github.com/CubeGPT/.github/discussions/1
-BASE_URL: "https://api.openai.com/v1/chat/completions"
+BASE_URL: "https://api.openai.com/v1"
 
 GENERATE_MODEL: "gpt-4-turbo" # Don't use gpt-4, because this model is longer supports json modes.
 
@@ -22,11 +22,11 @@ VISION_MODEL: "gpt-4-vision-preview"
 # Note: If you are using the free API key we provided, you can't use the advanced mode since it doesn't support dall-e-3 and gpt-4-vision-preview models.
 USE_DIFFERENT_APIKEY_FOR_DALLE_MODEL: False
 DALLE_API_KEY: ""
-DALLE_BASE_URL: "https://api.openai.com/v1/chat/completions"
+DALLE_BASE_URL: "https://api.openai.com/v1"
 
 USE_DIFFERENT_APIKEY_FOR_VISION_MODEL: False
 VISION_API_KEY: ""
-VISION_BASE_URL: "https://api.openai.com/v1/chat/completions"
+VISION_BASE_URL: "https://api.openai.com/v1"
 
 
 ########## EDIT OPTIONAL ##########
