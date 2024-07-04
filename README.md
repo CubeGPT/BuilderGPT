@@ -24,14 +24,6 @@ BuilderGPT is an open source, free, AI-powered Minecraft structure generator. It
 ![](https://github.com/Zhou-Shilin/picx-images-hosting/blob/master/img-mUATep311QjghtgbcihXCJwZ.png?raw=true)
 ![](https://github.com/Zhou-Shilin/picx-images-hosting/blob/master/Snipaste_2024-05-12_21-11-55.png?raw=true)
 
-## GET YOUR FREE API KEY WITH GPT-4 ACCESS
-We are pleased to announce that SEC-API is offering a free apikey for users of programs developed by CubeGPT!
-This key has access to gpt-4-1106-preview and gpt-3.5-turbo-1106.
-
-**Note that this key does not have access to models such as gpt-4-vision and expires at any time.**
-
-Get the key from [here](https://github.com/orgs/CubeGPT/discussions/1). You can use it in BuilderGPT.
-
 ## Partner
 [![](https://www.bisecthosting.com/partners/custom-banners/c37f58c7-c49b-414d-b53c-1a6e1b1cff71.webp)](https://bisecthosting.com/cubegpt)
 
@@ -56,30 +48,70 @@ After the user enters a requirement, the program uses `gpt-4-preview` to expand 
 
 ```json
 {
-    "materials": [
-        "A: \"minecraft:air\"",
-        "S: \"minecraft:stone\""
-    ],
     "structures": [
         {
-            "floor": 0,
-            "structure": "SSSSSSSS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSSSSSSSS"
+            "block": "minecraft:oak_planks",
+            "type": "fill",
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "toX": 4,
+            "toY": 0,
+            "toZ": 4
         },
         {
-            "floor": 1,
-            "structure": "SSGGGGSS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSSSSSSSS"
+            "block": "minecraft:oak_log",
+            "type": "fill",
+            "x": 1,
+            "y": 1,
+            "z": 1,
+            "toX": 3,
+            "toY": 1,
+            "toZ": 1
         },
         {
-            "floor": 2,
-            "structure": "SSGGGGSS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSSSSSSSS"
+            "block": "minecraft:minecraft:oak_door[half=lower]",
+            "type": "setblock",
+            "x": 2,
+            "y": 0,
+            "z": 0
         },
         {
-            "floor": 3,
-            "structure": "SSSSSSSS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSAAAAAAS\nSSSSSSSS"
+            "block": "minecraft:birch_sign",
+            "type": "setblock",
+            "x": 2,
+            "y": 1,
+            "z": 0
         },
         {
-            "floor": 4,
-            "structure": "SSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\nSSSSSSSS\n"
+            "block": "minecraft:oak_fence",
+            "type": "fill",
+            "x": 0,
+            "y": 1,
+            "z": 2,
+            "toX": 0,
+            "toY": 1,
+            "toZ": 4
+        },
+        {
+            "block": "minecraft:oak_fence",
+            "type": "fill",
+            "x": 1,
+            "y": 1,
+            "z": 4,
+            "toX": 5,
+            "toY": 1,
+            "toZ": 4
+        },
+        {
+            "block": "minecraft:oak_fence",
+            "type": "fill",
+            "x": 5,
+            "y": 1,
+            "z": 3,
+            "toX": 5,
+            "toY": 1,
+            "toZ": 1
         }
     ]
 }
