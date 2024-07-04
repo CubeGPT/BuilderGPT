@@ -40,7 +40,7 @@ Get the key from [here](https://github.com/orgs/CubeGPT/discussions/1). You can 
 - [x] Generate structures
 - [x] Preview rendered schematic in-program
 - [x] Export generated structures to `*.schem` files
-- [ ] Export generated structures to `*.mcfunction` files
+- [x] Export generated structures to `*.mcfunction` files
 - [x] **Advanced Mode** (Use Stable Diffusion/DALL-E to generate the design image and let `gpt-4-vision` generate the struture base on it.)
 - [ ] Edit structures
 
@@ -117,6 +117,9 @@ pip install -r requirements.txt
 5. Import the file into the game via worldedit or other tools. (Google is your best friend~~)
 -->
 
+Moved to [Wiki](https://github.com/CubeGPT/BuilderGPT/wiki).
+
+<!--
 ### Python/UI (RECOMMEND)
 1. Download `Source Code.zip` from [the release page](https://https://github.com/CubeGPT/BuilderGPT/releases) and unzip it.
 2. Edit `config.yaml`, fill in your OpenAI Apikey. If you don't know how, remember that [Google](https://www.google.com/) and [Bing](https://www.bing.com/) are always your best friends.
@@ -130,6 +133,8 @@ pip install -r requirements.txt
 3. Run `console.py` (bash `python console.py`), enter the description and let GPT generate the structure.
 4. Find your structure in `/generated/<name>.schem`.
 5. Import the file into the game via worldedit or other tools. (Google is your best friend~~)
+
+-->
 
 ## Contributing
 If you like the project, you can give the project a star, or [submit an issue](https://github.com/CubeGPT/BuilderGPT/issues) or [pull request](https://github.com/CubeGPT/BuilderGPT/pulls) to help make it better.

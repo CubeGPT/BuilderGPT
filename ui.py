@@ -14,7 +14,7 @@ import config
 import core
 import browser
 
-def get_schematic(description, progressbar):
+def get_schematic(description, progressbar, export_type):
     """
     Generate a schematic based on the given description.
 
@@ -46,12 +46,12 @@ def get_schematic(description, progressbar):
     # Wait for the progress thread to finish
     progress_thread.join()
 
-    schem = core.text_to_schem(response)
+    schem = core.text_to_schem(response, export_type=export_type)
     progressbar.set(100)
 
     return schem
 
-def get_schematic_advanced(description, progressbar):
+def get_schematic_advanced(description, progressbar, export_type):
     """
     Generates a schematic using advanced mode.
 
@@ -79,7 +79,7 @@ def get_schematic_advanced(description, progressbar):
     response = core.askgpt(config.SYS_GEN_ADV, config.USR_GEN_ADV.replace("%DESCRIPTION%", description), config.VISION_MODEL, image_url=image_url)
     progressbar.set(90)
 
-    schem = core.text_to_schem(response)
+    schem = core.text_to_schem(response, export_type=export_type)
     progressbar.set(100)
 
     return schem
@@ -98,13 +98,14 @@ def generate(args: dict):
     """
     description = args["Description"].get()
     game_version = args["Game Version"].get()
+    export_type = args["Export Type"].get()
 
     progressbar = args["Generation Progress"]
 
     if config.ADVANCED_MODE:
-        schem = get_schematic_advanced(description, progressbar)
+        schem = get_schematic_advanced(description, progressbar, export_type)
     else:
-        schem = get_schematic(description, progressbar)
+        schem = get_schematic(description, progressbar, export_type)
 
     raw_name = core.askgpt(config.SYS_GEN_NAME, config.USR_GEN_NAME.replace("%DESCRIPTION%", description), config.NAMING_MODEL, disable_json_mode=True)
 
@@ -112,9 +113,13 @@ def generate(args: dict):
 
     version_tag = core.input_version_to_mcs_tag(game_version)
 
-    schem.save("generated", name, version_tag)
-
-    print("Schematic saved as " + name + ".schem")
+    if schem is None:
+        shutil.copy("generated/temp.mcfunction", "generated/" + name + ".mcfunction")
+        os.remove("generated/temp.mcfunction")
+        print("Schematic saved as " + name + ".mcfunction")
+    else:
+        schem.save("generated", name, version_tag)
+        print("Schematic saved as " + name + ".schem")
 
     return True
 
@@ -137,6 +142,10 @@ def render(args: dict):
 
     print(f"Set schematic path to {schematic_path}.")
 
+    if ".mcfunction" in schematic_path:
+        MessageBox.error("*.mcfunction rendering is not supported. Please select a schematic file (.schem) instead of a mcfunction file.")
+        return
+
     try:
         os.remove("temp/waiting_for_upload.schem")
         os.remove("temp/screenshot.png")
@@ -149,16 +158,9 @@ def render(args: dict):
     shutil.copy(schematic_path, "temp/waiting_for_upload.schem")
     progress_bar.set(20)
 
-    if args["Headless-Enable"].get() == 1:
-        print("Headless mode enabled.")
-        is_headless = True
-    else:
-        print("Headless mode disabled.")
-        is_headless = False
-
     print("Rendering...")
     with sync_playwright() as playwright:
-        browser.run(playwright, progress_bar, is_headless=is_headless)
+        browser.run(playwright, progress_bar, is_headless=True)
 
     print("Rendering finished. Result:")
     root.print_image("temp/screenshot.png")
@@ -296,6 +298,7 @@ root.add_banner_tool(BaseBarTool(bind_func=export_log, name="Export Log"))
 # Generate Page
 root.add_notebook_tool(InputBox(name="Game Version", default="1.20.1", label_info="Game Version", tab_index=0))
 root.add_notebook_tool(InputBox(name="Description", default="A simple house", label_info="Description", tab_index=0))
+root.add_notebook_tool(RadioObviousToolButton(options=["schem", "mcfunction"], default="schem", name="Export Type", title="Export Type", tab_index=0))
 
 root.add_notebook_tool(Progressbar(name="Generation Progress", title="Progress", tab_index=0))
 root.add_notebook_tool(RunButton(bind_func=generate, name="Generate", text="Generate", tab_index=0))
@@ -303,11 +306,7 @@ root.add_notebook_tool(RunButton(bind_func=generate, name="Generate", text="Gene
 # Render Page
 root.add_notebook_tool(ChooseFileTextButton(name="Schematic File Path", label_info="Schematic File", tab_index=1))
 root.add_notebook_tool(Progressbar(name="Rendering Progress", title="Progress", tab_index=1))
-render_button = HorizontalToolsCombine([
-    ToggleButton(options=("Enable", 1), name="Headless", title="Headless",tab_index=1),
-    RunButton(bind_func=render, name="Render", text="Render", tab_index=1)
-])
-root.add_notebook_tool(render_button)
+root.add_notebook_tool(RunButton(bind_func=render, name="Render", text="Render", tab_index=1))
 
 # Settings Page
 root.add_notebook_tool(InputBox(name="API_KEY", default=config.API_KEY, label_info="API Key", tab_index=2))
