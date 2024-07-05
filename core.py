@@ -116,7 +116,7 @@ def ask_dall_e(description: str):
 
     return image_url
 
-def text_to_schem(text: str):
+def text_to_schem(text: str, export_type: str = "schem"):
     """
     Converts a JSON string to a Minecraft schematic.
 
@@ -130,28 +130,54 @@ def text_to_schem(text: str):
     try:
         data = json.loads(text)
         logger(f"text_to_command: loaded JSON data {data}")
-        schematic = mcschematic.MCSchematic()
 
-        for structure in data["structures"]:
-            block_id = structure["block"]
-            x = structure["x"]
-            y = structure["y"]
-            z = structure["z"]
+        if export_type == "schem":
+            schematic = mcschematic.MCSchematic()
 
-            if structure["type"] == "fill":
-                to_x = structure["toX"]
-                to_y = structure["toY"]
-                to_z = structure["toZ"]
+            for structure in data["structures"]:
+                block_id = structure["block"]
+                x = structure["x"]
+                y = structure["y"]
+                z = structure["z"]
 
-                for x in range(x, to_x + 1):
-                    for y in range(y, to_y + 1):
-                        for z in range(z, to_z + 1):
-                            schematic.setBlock((x, y, z), block_id)
+                if structure["type"] == "fill":
+                    to_x = structure["toX"]
+                    to_y = structure["toY"]
+                    to_z = structure["toZ"]
 
-            else:
-                schematic.setBlock((x, y, z), block_id)
+                    for x in range(x, to_x + 1):
+                        for y in range(y, to_y + 1):
+                            for z in range(z, to_z + 1):
+                                schematic.setBlock((x, y, z), block_id)
 
-        return schematic
+                else:
+                    schematic.setBlock((x, y, z), block_id)
+            
+            return schematic
+        
+        elif export_type == "mcfunction":
+            with open("generated/temp.mcfunction", "w") as f:
+                for structure in data["structures"]:
+                    block_id = structure["block"]
+                    x = structure["x"]
+                    y = structure["y"]
+                    z = structure["z"]
+
+                    if structure["type"] == "fill":
+                        to_x = structure["toX"]
+                        to_y = structure["toY"]
+                        to_z = structure["toZ"]
+
+                        for x in range(x, to_x + 1):
+                            for y in range(y, to_y + 1):
+                                for z in range(z, to_z + 1):
+                                    f.write(f"setblock {x} {y} {z} {block_id}\n")
+
+                    else:
+                        f.write(f"setblock {x} {y} {z} {block_id}\n")
+            
+            return None
+
     
     except (json.decoder.JSONDecodeError, KeyError, TypeError, ValueError, AttributeError, IndexError) as e:
         logger(f"text_to_command: failed to load JSON data. Error message: {e}")
