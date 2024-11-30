@@ -3,4 +3,4 @@ pyyaml
 cx_Freeze
 playwright
 uuid
-ttkbootstrap
+ttkbootstrap==0.5.1
