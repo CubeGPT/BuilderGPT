@@ -6,10 +6,10 @@
 #           -> o1       (For production, expensive but best quality)
 #           -> o1-mini  (For production, cheaper than o1 and good quality)
 
-API_KEY: "sk-hbRaQkczvCK4xwQzD808393e8a1d4354B0310aDdBd715d75"
-BASE_URL: "https://www.gptapi.us/v1"
+API_KEY: ""
+BASE_URL: "https://api.openai.com/v1"
 
-GENERATE_MODEL: "deepseek-r1"
+GENERATE_MODEL: "gpt-4o"
 
 # Deprecated, since it's not improving the quality of the generated structure.
 # ADVANCED MODE #
