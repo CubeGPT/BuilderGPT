@@ -5,3 +5,5 @@ build/*
 logs/*
 test.py
 _config.yaml
+
+dev/*

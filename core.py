@@ -1,5 +1,5 @@
 from openai import OpenAI
-import mcschematic
+import cube_mcschematic as mcschematic
 import sys
 import json
 import locale
@@ -64,19 +64,10 @@ def askgpt(system_prompt: str, user_prompt: str, model_name: str, disable_json_m
     logger(f"askgpt: user {user_prompt}")
 
     # Create a chat completion
-    if disable_json_mode or config.FORCE_DISABLE_JSON_MODE:
-        response = client.chat.completions.create(
-            model=model_name,
-            messages=messages,
-            timeout=120
-        )
-    else:
-        response = client.chat.completions.create(
-            model=model_name,
-            response_format={"type": "json_object"},
-            messages=messages,
-            timeout=120
-        )
+    response = client.chat.completions.create(
+        model=model_name,
+        messages=messages
+    )
 
     logger(f"askgpt: response {response}")
 
@@ -202,8 +193,7 @@ def input_version_to_mcs_tag(input_version):
         'JE_1_20_1'
     """
     try:
-        version = input_version.split(".")
-        result = getattr(mcschematic.Version, f"JE_{version[0]}_{version[1]}_{version[2]}")
+        result = getattr(mcschematic.Version, input_version)
     except (AttributeError, IndexError) as e:
         logger(f"input_version_to_mcs_tag: failed to convert version {input_version}; {e}")
         return None

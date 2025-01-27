@@ -2,19 +2,19 @@
 
 # GPT SETTINGS #
 # Get your api key from openai. Remember google/bing is always your best friend.
-# Model names: gpt-4-turbo-preview, gpt-3.5-turbo, etc.
-# Recommend -> gpt-4-turbo (Better performance, more expensive), gpt-4-o (Good performance, cheaper)
+# Models    -> gpt-4o   (For testing purposes, cheap but not the best quality)
+#           -> o1       (For production, expensive but best quality)
+#           -> o1-mini  (For production, cheaper than o1 and good quality)
 
-API_KEY: "" # Free API Key with GPT-4 access: https://github.com/CubeGPT/.github/discussions/1
+API_KEY: ""
 BASE_URL: "https://api.openai.com/v1"
 
-GENERATE_MODEL: "gpt-4-turbo" # Don't use gpt-4, because this model is longer supports json modes.
+GENERATE_MODEL: "gpt-4o"
 
-FORCE_DISABLE_JSON_MODE: True # For openai-formatting claude users.
-
+# Deprecated, since it's not improving the quality of the generated structure.
 # ADVANCED MODE #
 # This mode is experimental. This will enrich the aesthetics of the generated structure, but may affect the quality of the output to some extent. It also consumes more tokens when this mode is turned on, but we still recommend turning it on.
-ADVANCED_MODE: False # Not recommend.
+ADVANCED_MODE: False
 IMAGE_GENERATION_MODEL: "dall-e-3"
 IMAGE_SIZE: "1024x1024"
 VISION_MODEL: "gpt-4-vision-preview"
@@ -37,7 +37,7 @@ RENDERING_URL: "https://beta.cubical.xyz/" # Don't change this unless you know w
 
 # This will provide GPT the usable block id list
 # Befinits: Avoids gpt from generating invalid block ids
-# Disadvantages: Costs more (+$0.016 per gen for gpt-4-turbo-2024-04-09, +0.008 for gpt-4o)
+# Disadvantages: Costs more (+0.008 per gen for gpt-4o)
 GIVE_GPT_BLOCK_ID_LIST: False
 
 # DEVELOPER SETTINGS #
