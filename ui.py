@@ -1,6 +1,7 @@
 from cube_qgui.__init__ import CreateQGUI
 from cube_qgui.banner_tools import *
 from cube_qgui.notebook_tools import *
+from cube_mcschematic import Version
 from playwright.sync_api import Playwright, sync_playwright
 from tkinter import filedialog
 import os
@@ -294,7 +295,9 @@ root.add_banner_tool(GitHub("https://github.com/CubeGPT/BuilderGPT"))
 root.add_banner_tool(BaseBarTool(bind_func=export_log, name="Export Log"))
 
 # Generate Page
-root.add_notebook_tool(InputBox(name="Game Version", default="1.20.1", label_info="Game Version", tab_index=0))
+#root.add_notebook_tool(InputBox(name="Game Version", default="1.20.1", label_info="Game Version", tab_index=0))
+versions = [attr.name for attr in Version]
+root.add_notebook_tool(Combobox(name="Game Version", options=versions, title="Game Version", tab_index=0))
 root.add_notebook_tool(InputBox(name="Description", default="A simple house", label_info="Description", tab_index=0))
 
 root.add_notebook_tool(Progressbar(name="Generation Progress", title="Progress", tab_index=0))
